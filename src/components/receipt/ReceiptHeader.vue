@@ -1,18 +1,22 @@
 <template>
-  <el-card class="box-card">
+  <el-card class="box-card" shadow="never">
     <template #header>
       <div class="card-header">
-        <span>Card name</span>
-        <el-button class="button" text>Operation button</el-button>
+        <span>yyyy/mm/dd mon</span>
+        <el-button class="button" text>$total pcice</el-button>
       </div>
     </template>
-    <div v-for="o in 4" :key="o" class="text item">{{ "List item " + o }}</div>
+    <div v-for="o in 4" :key="o" class="text item">
+      <span>icon</span>
+      <span>{{ "List item " + o }}</span>
+      <span>$price</span>
+    </div>
   </el-card>
 </template>
 
 <script setup lang="ts"></script>
 
-<style>
+<style scoped>
 .card-header {
   display: flex;
   justify-content: space-between;
@@ -20,14 +24,17 @@
 }
 
 .text {
-  font-size: 14px;
+  font-size: 16px;
 }
 
 .item {
-  margin-bottom: 18px;
+  display: flex;
+  justify-content: space-between;
+  padding: 5px 0;
+  border-bottom: 1px solid #dcdfe6;
 }
 
 .box-card {
-  width: 480px;
+  width: 100%;
 }
 </style>

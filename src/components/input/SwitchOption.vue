@@ -1,26 +1,30 @@
 <template>
   <ElTabs v-model="isOutcome" type="border-card" class="tabs" :stretch="true">
     <ElTabPane label="支出" name="outcome">
-      <ElButton
-        v-for="(o, index) in categories.outcomes"
-        :key="index"
-        :icon="o.icon"
-        class="text item"
-        @click="handleBtnClick(o)"
-      >
-        {{ o.title }}
-      </ElButton>
+      <el-space wrap>
+        <ElButton
+          v-for="(o, index) in categories.outcomes"
+          :key="index"
+          :icon="o.icon"
+          class="text item"
+          @click="handleBtnClick(o)"
+        >
+          {{ o.title }}
+        </ElButton>
+      </el-space>
     </ElTabPane>
     <ElTabPane label="收入" name="income">
-      <ElButton
-        v-for="(i, index) in categories.incomes"
-        :key="index"
-        :icon="i.icon"
-        class="text item"
-        @click="handleBtnClick(i)"
-      >
-        {{ i.title }}
-      </ElButton>
+      <el-space wrap>
+        <ElButton
+          v-for="(i, index) in categories.incomes"
+          :key="index"
+          :icon="i.icon"
+          class="text item"
+          @click="handleBtnClick(i)"
+        >
+          {{ i.title }}
+        </ElButton>
+      </el-space>
     </ElTabPane>
   </ElTabs>
 </template>
@@ -42,19 +46,13 @@ const handleBtnClick = (event: { id: number; title: string; icon: string }) => {
 </script>
 
 <style scoped>
-.el-button {
-  background-color: transparent;
-}
 .text {
   font-size: 16px;
   color: #666;
 }
 .item {
-  display: inline-flex;
-  float: left;
+  background-color: transparent;
   border: 1px solid #888;
-  padding: 5px 10px;
-  margin: 6px 0px 6px 12px;
   border-radius: 20px;
 }
 .tabs {
