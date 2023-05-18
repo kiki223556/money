@@ -1,5 +1,6 @@
 <template>
   <ReceiptHeader />
+  <ReceiptHeader />
 </template>
 
 <script setup lang="ts">

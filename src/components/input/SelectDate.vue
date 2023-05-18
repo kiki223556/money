@@ -17,16 +17,12 @@
 
 <script lang="ts" setup>
 import { ref } from "vue";
+import useDate from "@/hooks/useDate";
 
 const date = ref("");
 const radio = ref("無");
 
-//取得當前月份
-const currentDate = new Date();
-const currentYear = currentDate.getFullYear();
-const currentMonth = currentDate.getMonth() + 1;
-const currentDay = currentDate.getDate();
-const NowDate = currentYear + "-" + currentMonth + "-" + currentDay;
+let NowDate = useDate().NowDate;
 </script>
 
 <style scoped>

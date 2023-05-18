@@ -1,3 +1,4 @@
+<!-- eslint-disable prettier/prettier -->
 <template>
   <div class="common-layout">
     <el-container>
@@ -13,7 +14,12 @@
           <el-row>
             <!-- left -->
             <el-col :span="11"><CircleMoney /></el-col>
-            <el-col :span="1"><el-divider direction="vertical" /></el-col>
+            <!-- middle -->
+            <el-col :span="1">
+              <el-affix :offset="90">
+                <el-divider direction="vertical" />
+              </el-affix>
+            </el-col>
             <!-- right -->
             <el-col :span="12">
               <IndexInput />

@@ -1,19 +1,21 @@
 <template>
-  <div class="incomeAndOutcome">
-    <span>月支出</span>
-    <span>月收入</span>
-  </div>
-  <div class="incomeAndOutcome">
-    <span>${{ MonthOutcome }}</span>
-    <span>${{ MonthIncome }}</span>
-  </div>
-  <!-- 進度條展示 -->
-  <div class="demo-progress">
-    <el-progress type="circle" :percentage="percentage" :width="300">
-      <span class="money-label">月結餘</span>
-      <span class="money-value">${{ monthBalance }}</span>
-    </el-progress>
-  </div>
+  <el-affix :offset="90">
+    <div class="incomeAndOutcome">
+      <span>月支出</span>
+      <span>月收入</span>
+    </div>
+    <div class="incomeAndOutcome">
+      <span>${{ MonthOutcome }}</span>
+      <span>${{ MonthIncome }}</span>
+    </div>
+    <!-- 進度條展示 -->
+    <div class="demo-progress">
+      <el-progress type="circle" :percentage="percentage" :width="300">
+        <span class="money-label">月結餘</span>
+        <span class="money-value">${{ monthBalance }}</span>
+      </el-progress>
+    </div>
+  </el-affix>
 </template>
 
 <script lang="ts" setup>
