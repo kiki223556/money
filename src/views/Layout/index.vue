@@ -1,13 +1,13 @@
 <template>
-  <div>
-    <LayoutHeader></LayoutHeader>
+  <div class="container">
     <LayoutAside></LayoutAside>
-    <LayoutMain></LayoutMain>
+    <LayoutMain>
+      <router-view></router-view>
+    </LayoutMain>
   </div>
 </template>
 
 <script setup lang="ts">
-import LayoutHeader from "./components/LayoutHeader.vue";
 import LayoutAside from "./components/LayoutAside.vue";
 import LayoutMain from "./components/LayoutMain.vue";
 </script>
