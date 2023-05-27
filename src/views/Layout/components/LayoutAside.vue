@@ -1,13 +1,11 @@
 <template>
   <div class="aside-layout aside-text">
     <SideMenu></SideMenu>
-    <UserAvatar></UserAvatar>
   </div>
 </template>
 
 <script setup lang="ts">
 import SideMenu from "@/components/SideMenu.vue";
-import UserAvatar from "@/components/UserAvatar.vue";
 </script>
 
 <style scoped>
