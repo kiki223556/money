@@ -1,7 +1,12 @@
 <template>
   <div class="demo-date-picker">
     <div class="block">
-      <el-date-picker v-model="date" type="date" :placeholder="NowDate" />
+      <el-date-picker
+        v-model="date"
+        type="date"
+        format="YYYY-MM-DD ddd"
+        :placeholder="NowDayOfWeek"
+      />
     </div>
 
     <div class="block radio-block">
@@ -22,7 +27,7 @@ import useDate from "@/hooks/useDate";
 const date = ref("");
 const radio = ref("無");
 
-let NowDate = useDate().NowDate;
+let NowDayOfWeek = useDate().NowDayOfWeek;
 </script>
 
 <style scoped>

@@ -7,9 +7,9 @@
           :key="index"
           :icon="o.icon"
           class="text item"
-          @click="handleBtnClick(o)"
+          @click="selectCategory(o)"
         >
-          {{ o.title }}
+          {{ o.type }}
         </ElButton>
       </el-space>
     </ElTabPane>
@@ -20,9 +20,9 @@
           :key="index"
           :icon="i.icon"
           class="text item"
-          @click="handleBtnClick(i)"
+          @click="selectCategory(i)"
         >
-          {{ i.title }}
+          {{ i.type }}
         </ElButton>
       </el-space>
     </ElTabPane>
@@ -35,13 +35,19 @@ import categories from "@/config/categories";
 
 const isOutcome = ref("outcome");
 // eslint-disable-next-line no-undef
-const emit = defineEmits(["selectCategory"]);
+const emit = defineEmits(["clickType"]);
 
-const handleBtnClick = (event: { id: number; title: string; icon: string }) => {
-  console.log("title:", event.title);
-  console.log("id:", event.id);
-  console.log("icon:", event.icon);
-  emit("selectCategory", event.id, event.title, event.icon);
+const selectCategory = (event: { id: number; type: string; icon: string }) => {
+  const item = {
+    id: event.id,
+    type: event.type,
+    icon: event.icon,
+  };
+  console.log(item);
+  emit("clickType", item);
+  // console.log("id:", event.id);
+  // console.log("type:", event.type);
+  // console.log("icon:", event.icon);
 };
 </script>
 

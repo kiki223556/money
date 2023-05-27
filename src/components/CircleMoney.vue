@@ -37,6 +37,7 @@ onMounted(() => {
 
 <style scoped>
 .incomeAndOutcome {
+  margin: 0 20px;
   display: flex;
   justify-content: space-between;
   align-items: center;

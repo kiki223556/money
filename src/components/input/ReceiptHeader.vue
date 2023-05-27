@@ -2,19 +2,24 @@
   <el-card class="box-card" shadow="never">
     <template #header>
       <div class="card-header">
-        <span>yyyy/mm/dd dddd</span>
+        <!-- <span>{{ receipt[0].date }}</span> -->
+        <span>2023/11/11</span>
         <span>$total price</span>
       </div>
     </template>
-    <div v-for="o in 4" :key="o" class="text item">
+    <li v-for="r in receipt" :key="r.id" class="text item">
       <el-icon><Burger /></el-icon>
-      <span>{{ "List item " + o }}</span>
-      <span>$price</span>
-    </div>
+      <span>{{ r.title }}</span>
+      <span>$ {{ r.price }}</span>
+    </li>
   </el-card>
 </template>
 
-<script setup lang="ts"></script>
+<script setup lang="ts">
+// eslint-disable-next-line no-undef
+const props = defineProps(["receipt"]);
+console.log("@@", props.receipt);
+</script>
 
 <style scoped>
 .card-header {
@@ -35,7 +40,6 @@
 }
 
 .box-card {
-  margin-top: 10px;
-  width: 100%;
+  margin: 10px;
 }
 </style>
