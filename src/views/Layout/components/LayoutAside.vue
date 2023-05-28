@@ -10,6 +10,9 @@ import SideMenu from "@/components/SideMenu.vue";
 
 <style scoped>
 .aside-layout {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
   width: 320px;
   float: left;
   height: 100vh;
@@ -17,7 +20,5 @@ import SideMenu from "@/components/SideMenu.vue";
 }
 .aside-text {
   color: #fff;
-  align-items: start;
-  justify-content: center;
 }
 </style>

@@ -15,7 +15,7 @@
   border-top: 1px solid #fff;
   width: 280px;
   margin: 0 20px;
-  position: fixed;
+  position: absolute;
   bottom: 20px;
   padding: 15px 0px;
   display: flex;
