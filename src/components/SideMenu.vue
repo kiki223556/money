@@ -1,11 +1,11 @@
 <template>
-  <h3 class="a">money web</h3>
+  <h3>money web</h3>
   <el-menu
     default-active="1"
     text-color="#fff"
     active-text-color="#F0EB8D"
     background-color="#8F43EE"
-    class="el-menu-vertical a"
+    class="el-menu-vertical"
   >
     <el-menu-item index="1">
       <el-icon><HomeFilled /></el-icon>
@@ -20,7 +20,7 @@
       <span>備註</span>
     </el-menu-item>
   </el-menu>
-  <div class="a">
+  <div class="avatar">
     <UserAvatar></UserAvatar>
   </div>
 </template>
@@ -33,14 +33,12 @@ import UserAvatar from "./UserAvatar.vue";
 .el-menu-vertical {
   background-color: transparent;
   overflow-y: scroll;
-  flex-grow: 2;
-  flex-shrink: 1;
-  flex-basis: 0%;
+}
+.avatar {
+  flex: initial;
+  min-height: 100px;
 }
 .el-menu-item {
   font-size: 16px;
-}
-.a {
-  flex: 0;
 }
 </style>
