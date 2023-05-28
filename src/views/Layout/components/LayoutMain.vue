@@ -7,7 +7,7 @@
 <style scoped>
 .main-layout {
   background-color: #2d2727;
-  height: 100vh;
+  height: 100svh;
 }
 .main-text {
   color: #fff;

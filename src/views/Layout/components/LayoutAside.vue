@@ -15,7 +15,7 @@ import SideMenu from "@/components/SideMenu.vue";
   align-items: stretch;
   width: 320px;
   float: left;
-  height: 100vh;
+  height: 100svh;
   background-color: #413543;
 }
 .aside-text {
