@@ -1,10 +1,6 @@
 <template>
-  <div class="container">
-    <LayoutAside></LayoutAside>
-    <LayoutMain>
-      <router-view></router-view>
-    </LayoutMain>
-  </div>
+  <LayoutAside />
+  <LayoutMain />
 </template>
 
 <script setup lang="ts">
