@@ -1,24 +1,18 @@
 <template>
   <h3>money web</h3>
   <el-menu
-    default-active="1"
+    :default-active="activeIndex"
     text-color="#fff"
     active-text-color="#F0EB8D"
     background-color="#8F43EE"
     class="el-menu-vertical"
   >
-    <el-menu-item index="1">
-      <el-icon><HomeFilled /></el-icon>
-      <span>首頁</span>
-    </el-menu-item>
-    <el-menu-item index="2">
-      <el-icon><Setting /></el-icon>
-      <span>設定</span>
-    </el-menu-item>
-    <el-menu-item index="3">
-      <el-icon><Document /></el-icon>
-      <span>備註</span>
-    </el-menu-item>
+    <router-link :to="item.path" v-for="item in menuLists" :key="item.id">
+      <el-menu-item :index="item.id">
+        <el-link :underline="false" :icon="item.icon" />
+        <h3>{{ item.title }}</h3>
+      </el-menu-item>
+    </router-link>
   </el-menu>
   <div class="avatar">
     <UserAvatar></UserAvatar>
@@ -26,7 +20,11 @@
 </template>
 
 <script lang="ts" setup>
+import { ref } from "vue";
 import UserAvatar from "./UserAvatar.vue";
+import menuLists from "@/config/menuLists";
+
+const activeIndex = ref("1");
 </script>
 
 <style scoped>
@@ -37,8 +35,5 @@ import UserAvatar from "./UserAvatar.vue";
 .avatar {
   flex: initial;
   min-height: 100px;
-}
-.el-menu-item {
-  font-size: 16px;
 }
 </style>

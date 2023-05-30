@@ -24,6 +24,15 @@ body {
   height: 100%;
 }
 
+a {
+  color: #fff !important;
+  text-decoration: none !important;
+}
+
+a:hover {
+  color: #f0eb8d !important;
+}
+
 .container {
   width: 100%;
 }
