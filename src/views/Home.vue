@@ -2,7 +2,7 @@
   <div class="home-layout">
     <div class="home-content">
       <h2>MONEY WEB</h2>
-      <h1>::: 一起輕鬆理財 :::</h1>
+      <h1>::: 一起輕鬆記帳 :::</h1>
       <FeatureBlocks />
     </div>
   </div>
