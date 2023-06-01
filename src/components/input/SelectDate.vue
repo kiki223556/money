@@ -8,15 +8,6 @@
         :placeholder="NowDayOfWeek"
       />
     </div>
-
-    <div class="block radio-block">
-      <el-radio-group v-model="radio">
-        <el-radio-button label="無" />
-        <el-radio-button label="1/週" />
-        <el-radio-button label="2/週" />
-        <el-radio-button label="4/週" />
-      </el-radio-group>
-    </div>
   </div>
 </template>
 
@@ -25,20 +16,17 @@ import { ref } from "vue";
 import useDate from "@/hooks/useDate";
 
 const date = ref("");
-const radio = ref("無");
 
 let NowDayOfWeek = useDate().NowDayOfWeek;
 </script>
 
 <style scoped>
-.radio-block {
-  margin-left: 12px;
-}
 .demo-date-picker {
   display: flex;
   width: 100%;
   padding: 0;
   flex-wrap: wrap;
+  margin: 0 20px;
 }
 
 .demo-date-picker .block {

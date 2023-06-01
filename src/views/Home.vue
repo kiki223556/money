@@ -19,7 +19,11 @@ import FeatureBlocks from "@/components/FeatureBlocks.vue";
 }
 
 .home-content {
-  margin-top: 200px;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
 }
 
 .home-content h1 {

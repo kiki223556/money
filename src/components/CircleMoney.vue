@@ -50,11 +50,11 @@ onMounted(() => {
   display: block;
   margin-top: 10px;
   font-size: 30px;
-  color: #333;
+  color: #fff;
 }
 .money-label {
   display: block;
   font-size: 18px;
-  color: #333;
+  color: #fff;
 }
 </style>

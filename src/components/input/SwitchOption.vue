@@ -30,24 +30,19 @@
 </template>
 
 <script lang="ts" setup>
-import { ref } from "vue";
+import { ref, reactive } from "vue";
 import categories from "@/config/categories";
 
 const isOutcome = ref("outcome");
-// eslint-disable-next-line no-undef
-const emit = defineEmits(["clickType"]);
+const activeButtonIndex = ref(-1);
 
-const selectCategory = (event: { id: number; type: string; icon: string }) => {
-  const item = {
-    id: event.id,
-    type: event.type,
-    icon: event.icon,
-  };
-  console.log(item);
-  emit("clickType", item);
-  // console.log("id:", event.id);
-  // console.log("type:", event.type);
-  // console.log("icon:", event.icon);
+// eslint-disable-next-line prettier/prettier
+let data = reactive<{ id: number; type: string; icon: string }[]>([]);
+
+const selectCategory = (value: { id: number; type: string; icon: string }) => {
+  console.log(value);
+  data.push({ ...value });
+  console.log(data);
 };
 </script>
 
@@ -64,7 +59,6 @@ const selectCategory = (event: { id: number; type: string; icon: string }) => {
 .tabs {
   border-radius: 5px;
   width: 100%;
-  height: 260px;
   background-color: transparent;
 }
 </style>

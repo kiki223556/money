@@ -1,19 +1,22 @@
 <template>
   <div class="type-layout">
-    <div>
+    <div class="a">
       <el-input v-model="input" placeholder="在此輸入備註">
         <template #prepend>
-          <el-button :icon="icon" />
+          <span>項目</span>
         </template>
       </el-input>
 
       <el-input v-model="price" placeholder="0" @input="handlePriveInput">
-        <template #prepend>$ </template>
+        <template #prepend>
+          <span>價位</span>
+        </template>
       </el-input>
     </div>
 
     <div>
-      <el-button class="btn" type="info" @click="add">新增</el-button>
+      <el-button class="btn" type="primary" @click="add">新增</el-button>
+      <el-button class="btn" type="info" @click="deleteItem">取消</el-button>
     </div>
   </div>
 </template>
@@ -28,7 +31,6 @@ console.log("##", props.receipt, props.clickType);
 
 const input = ref("");
 const price = ref("");
-const icon = ref("Burger");
 
 // eslint-disable-next-line no-undef
 const emit = defineEmits(["addReceipt"]);
@@ -42,11 +44,14 @@ const handlePriveInput = (val: string) => {
   price.value = formattedValue;
 };
 
+const deleteItem = () => {
+  console.log("執行delete");
+};
+
 const add = () => {
   if (!price.value.trim()) return alert("價格不能為空");
   const item = {
     id: nanoid(),
-    icon: props.clickType.icon,
     title: input.value || props.receipt[0].type,
     price: price.value,
   };
@@ -58,20 +63,21 @@ const add = () => {
 <style scoped>
 .type-layout {
   display: flex;
+  flex-direction: column;
+  margin: 0 20px;
+}
+
+.a {
+  width: 100%;
 }
 
 .el-input {
-  float: left;
-  width: 100%;
   margin-bottom: 10px;
   font-size: 14px;
   text-align: center;
 }
 
 .btn {
-  float: right;
-  width: 60px;
-  height: 75px;
-  margin-left: 10px;
+  float: left;
 }
 </style>
