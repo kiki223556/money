@@ -1,8 +1,8 @@
 <template>
-  <ElTabs v-model="isOutcome" type="border-card" class="tabs" :stretch="true">
-    <ElTabPane label="支出" name="outcome">
+  <el-tabs v-model="isOutcome" type="border-card" class="tabs" :stretch="true">
+    <el-tab-pane label="支出" name="outcome">
       <el-space wrap>
-        <ElButton
+        <el-button
           v-for="(o, index) in categories.outcomes"
           :key="index"
           :icon="o.icon"
@@ -10,12 +10,12 @@
           @click="selectCategory(o)"
         >
           {{ o.type }}
-        </ElButton>
+        </el-button>
       </el-space>
-    </ElTabPane>
-    <ElTabPane label="收入" name="income">
+    </el-tab-pane>
+    <el-tab-pane label="收入" name="income">
       <el-space wrap>
-        <ElButton
+        <el-button
           v-for="(i, index) in categories.incomes"
           :key="index"
           :icon="i.icon"
@@ -23,10 +23,10 @@
           @click="selectCategory(i)"
         >
           {{ i.type }}
-        </ElButton>
+        </el-button>
       </el-space>
-    </ElTabPane>
-  </ElTabs>
+    </el-tab-pane>
+  </el-tabs>
 </template>
 
 <script lang="ts" setup>
@@ -34,8 +34,6 @@ import { ref, reactive } from "vue";
 import categories from "@/config/categories";
 
 const isOutcome = ref("outcome");
-const activeButtonIndex = ref(-1);
-
 // eslint-disable-next-line prettier/prettier
 let data = reactive<{ id: number; type: string; icon: string }[]>([]);
 
@@ -49,16 +47,17 @@ const selectCategory = (value: { id: number; type: string; icon: string }) => {
 <style scoped>
 .text {
   font-size: 16px;
-  color: #666;
+  color: #fff;
+  background-color: #413543;
 }
 .item {
-  background-color: transparent;
-  border: 1px solid #888;
   border-radius: 20px;
+  border-color: rgb(108, 121, 132);
 }
 .tabs {
-  border-radius: 5px;
   width: 100%;
+  border-radius: 5px;
   background-color: transparent;
+  border-color: #fff;
 }
 </style>

@@ -1,13 +1,13 @@
 <template>
   <div class="type-layout">
     <div class="a">
-      <el-input v-model="input" placeholder="在此輸入備註">
+      <el-input v-model="item.title" placeholder="在此輸入備註">
         <template #prepend>
           <span>項目</span>
         </template>
       </el-input>
 
-      <el-input v-model="price" placeholder="0" @input="handlePriveInput">
+      <el-input v-model="item.price" placeholder="0" @input="handlePriveInput">
         <template #prepend>
           <span>價位</span>
         </template>
@@ -22,26 +22,17 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from "vue";
-import { nanoid } from "nanoid";
+import { reactive } from "vue";
 
-// eslint-disable-next-line no-undef
-const props = defineProps(["receipt", "clickType"]);
-console.log("##", props.receipt, props.clickType);
-
-const input = ref("");
-const price = ref("");
-
-// eslint-disable-next-line no-undef
-const emit = defineEmits(["addReceipt"]);
-
-// eslint-disable-next-line no-undef
-// const emit = defineEmits(["addReceipt"]);
+const item = reactive({
+  title: "",
+  price: "",
+});
 
 const handlePriveInput = (val: string) => {
   // 使用正则表达式去除非数字字符
   const formattedValue = val.replace(/\D/g, "");
-  price.value = formattedValue;
+  item.price = formattedValue;
 };
 
 const deleteItem = () => {
@@ -49,14 +40,7 @@ const deleteItem = () => {
 };
 
 const add = () => {
-  if (!price.value.trim()) return alert("價格不能為空");
-  const item = {
-    id: nanoid(),
-    title: input.value || props.receipt[0].type,
-    price: price.value,
-  };
-  console.log("item:", item);
-  emit("addReceipt", item);
+  if (!item.price.trim()) return alert("價格不能為空");
 };
 </script>
 
@@ -64,7 +48,6 @@ const add = () => {
 .type-layout {
   display: flex;
   flex-direction: column;
-  margin: 0 20px;
 }
 
 .a {

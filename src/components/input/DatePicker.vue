@@ -5,6 +5,7 @@
         v-model="date"
         type="date"
         format="YYYY-MM-DD ddd"
+        value-format="YYYY-MM-DD ddd"
         :placeholder="NowDayOfWeek"
       />
     </div>
@@ -12,12 +13,14 @@
 </template>
 
 <script lang="ts" setup>
-import { ref } from "vue";
+import { ref, onBeforeUpdate } from "vue";
 import useDate from "@/hooks/useDate";
 
 const date = ref("");
-
 let NowDayOfWeek = useDate().NowDayOfWeek;
+onBeforeUpdate(() => {
+  console.log(date);
+});
 </script>
 
 <style scoped>
@@ -26,7 +29,6 @@ let NowDayOfWeek = useDate().NowDayOfWeek;
   width: 100%;
   padding: 0;
   flex-wrap: wrap;
-  margin: 0 20px;
 }
 
 .demo-date-picker .block {
