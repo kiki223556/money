@@ -93,6 +93,7 @@ import { DiaryRecord } from "@/types/record";
 let NowDayOfWeek = useDate().NowDayOfWeek;
 
 const form = reactive({
+  id: nanoid(),
   date: NowDayOfWeek,
   icon: "",
   type: "",
@@ -103,7 +104,6 @@ const form = reactive({
 const records = ref([]);
 
 const addRecord = () => {
-  if (!form.price) return alert("價格不能為空");
   if (!form.type) return alert("請選擇類別");
   const newRecord: DiaryRecord = {
     id: nanoid(),
@@ -117,6 +117,11 @@ const addRecord = () => {
   setTimeout(() => {
     dialogVisible.value = false;
   }, 300);
+  resetFormValue();
+};
+
+const resetFormValue = function () {
+  form.id = nanoid();
   form.date = NowDayOfWeek;
   form.icon = "";
   form.type = "";
