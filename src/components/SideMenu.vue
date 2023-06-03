@@ -1,7 +1,7 @@
 <template>
   <h3>money web</h3>
   <el-menu
-    :default-active="activeIndex"
+    :default-active="handleIndex"
     text-color="#fff"
     active-text-color="#F0EB8D"
     background-color="#8F43EE"
@@ -20,11 +20,21 @@
 </template>
 
 <script lang="ts" setup>
-import { ref } from "vue";
+import { computed } from "vue";
 import UserAvatar from "./UserAvatar.vue";
 import menuLists from "@/config/menuLists";
+import { useRoute } from "vue-router";
 
-const activeIndex = ref("1");
+const route = useRoute();
+
+const handleIndex = computed(() => {
+  const foundMenu = menuLists.find((m) => m.path === route.path);
+  if (foundMenu) {
+    return foundMenu.id;
+  } else {
+    return "1";
+  }
+});
 </script>
 
 <style scoped>
