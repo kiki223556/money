@@ -50,7 +50,7 @@
         </el-form-item>
 
         <el-form-item label="價格">
-          <el-input v-model="form.price" @input="handlePriveInput" />
+          <el-input v-model.number="form.price" />
         </el-form-item>
 
         <el-form-item>
@@ -83,11 +83,12 @@
 
 <script lang="ts" setup>
 import { ref, computed } from "vue";
-import nanoid from "nanoid";
+import { nanoid } from "nanoid";
 import useDate from "@/hooks/useDate";
 import categories from "@/config/categories";
 import { reactive } from "vue";
 import { Edit } from "@element-plus/icons-vue";
+import { DiaryRecord } from "@/types/record";
 
 let NowDayOfWeek = useDate().NowDayOfWeek;
 
@@ -96,16 +97,16 @@ const form = reactive({
   icon: "",
   type: "",
   name: "",
-  price: "",
+  price: 0,
 });
 
 const records = ref([]);
 
 const addRecord = () => {
-  if (!form.price.trim()) return alert("價格不能為空");
+  if (!form.price) return alert("價格不能為空");
   if (!form.type) return alert("請選擇類別");
-  const newRecord = {
-    id: nanoid,
+  const newRecord: DiaryRecord = {
+    id: nanoid(),
     date: form.date,
     icon: form.icon,
     type: form.type,
@@ -120,29 +121,21 @@ const addRecord = () => {
   form.icon = "";
   form.type = "";
   form.name = "";
-  form.price = "";
-};
-
-const handlePriveInput = (val: string) => {
-  // 使用正则表达式去除非数字字符
-  const formattedValue = val.replace(/\D/g, "");
-  form.price = formattedValue;
+  form.price = 0;
 };
 
 const groupedRecords = computed(() => {
-  const groups = [];
-  for (const record of records.value) {
-    const group = groups.find((g) => g.date === record.date);
-    if (group) {
-      group.records.push(record);
-    } else {
-      groups.push({
+  const groups = new Map();
+  for (const record of records.value as DiaryRecord[]) {
+    if (!groups.has(record.date)) {
+      groups.set(record.date, {
         date: record.date,
-        records: [record],
+        records: [],
       });
     }
+    groups.get(record.date).records.push(record);
   }
-  return groups;
+  return Array.from(groups.values());
 });
 
 const dialogVisible = ref(false);
