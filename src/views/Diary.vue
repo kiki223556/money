@@ -82,11 +82,10 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, computed } from "vue";
+import { computed, reactive, ref } from "vue";
 import { nanoid } from "nanoid";
 import useDate from "@/hooks/useDate";
 import categories from "@/config/categories";
-import { reactive } from "vue";
 import { Edit } from "@element-plus/icons-vue";
 import { DiaryRecord } from "@/types/record";
 
@@ -140,7 +139,10 @@ const groupedRecords = computed(() => {
     }
     groups.get(record.date).records.push(record);
   }
-  return Array.from(groups.values());
+
+  return Array.from(groups.values()).sort((a, b) => {
+    return a.date.localeCompare(b.date);
+  });
 });
 
 const dialogVisible = ref(false);
