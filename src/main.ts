@@ -1,11 +1,10 @@
-/* eslint-disable prettier/prettier */
 import { createApp } from "vue";
 import router from "./router";
 import ElementPlus from "element-plus";
 import "element-plus/dist/index.css";
 import * as ElementPlusIconsVue from "@element-plus/icons-vue";
 import { createPinia } from "pinia";
-import "@/styles/index.css";
+import "./styles/index.css";
 import vue3GoogleLogin from "vue3-google-login";
 import App from "./App.vue";
 

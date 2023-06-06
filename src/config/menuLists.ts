@@ -8,7 +8,7 @@ const menuLists = [
   {
     id: "2",
     title: "日記帳",
-    path: "/journal",
+    path: "/diary",
     icon: "Coin",
   },
   {

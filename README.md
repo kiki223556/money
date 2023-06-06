@@ -1,31 +1,18 @@
-# money
+# Vue 3 + TypeScript + Vite
 
-## Version
-- please use node 16+
+This template should help get you started developing with Vue 3 and TypeScript in Vite. The template uses Vue 3 `<script setup>` SFCs, check out the [script setup docs](https://v3.vuejs.org/api/sfc-script-setup.html#sfc-script-setup) to learn more.
 
-## Project setup
-```
-npm install
-```
+## Recommended IDE Setup
 
-### Compiles and hot-reloads for development
-```
-npm run serve
-```
+- [VS Code](https://code.visualstudio.com/) + [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (and disable Vetur) + [TypeScript Vue Plugin (Volar)](https://marketplace.visualstudio.com/items?itemName=Vue.vscode-typescript-vue-plugin).
 
-### Git comment
-- feat: This type of commit adds new functionality to the project.
+## Type Support For `.vue` Imports in TS
 
-  `Example: feat: Add search functionality to the home page`
+TypeScript cannot handle type information for `.vue` imports by default, so we replace the `tsc` CLI with `vue-tsc` for type checking. In editors, we need [TypeScript Vue Plugin (Volar)](https://marketplace.visualstudio.com/items?itemName=Vue.vscode-typescript-vue-plugin) to make the TypeScript language service aware of `.vue` types.
 
-- fix: This type of commit fixes a bug or resolves an issue in the existing code.
+If the standalone TypeScript plugin doesn't feel fast enough to you, Volar has also implemented a [Take Over Mode](https://github.com/johnsoncodehk/volar/discussions/471#discussioncomment-1361669) that is more performant. You can enable it by the following steps:
 
-  `Example: fix: Resolve null pointer exception in login function`
-
-- chore: This type of commit involves regular code maintenance tasks and doesn't change the actual source code that runs the project.
-
-  `Example: chore: Update comments in the UserController class
-`
-- refactor: This type of commit involves changes to the code that neither fixes a bug nor adds a feature. Often this involves improving the code after it has been written, like changing the structure of the code or improving its readability.
-
-  `Example: refactor: Rename variables in the AccountService class for clarity`
+1. Disable the built-in TypeScript Extension
+   1. Run `Extensions: Show Built-in Extensions` from VSCode's command palette
+   2. Find `TypeScript and JavaScript Language Features`, right click and select `Disable (Workspace)`
+2. Reload the VSCode window by running `Developer: Reload Window` from the command palette.

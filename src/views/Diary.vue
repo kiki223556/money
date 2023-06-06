@@ -1,6 +1,5 @@
-<!-- eslint-disable prettier/prettier -->
 <template>
-  <div class="journal-layout container">
+  <div class="diary-layout container">
     <el-button
       @click="showDialog"
       class="show-dialog-btn"
@@ -8,6 +7,7 @@
       circle
       size="large"
       type="warning"
+      color="#F0EB8D"
     />
     <el-dialog
       v-model="dialogVisible"
@@ -40,7 +40,14 @@
                 :key="item.id"
                 :label="item.type"
                 :value="item.type"
-              />
+                @click="updateIcon(item.icon)"
+              >
+                <el-button
+                  style="border: 0px; background-color: transparent"
+                  :icon="item.icon"
+                />
+                <span>{{ item.type }}</span>
+              </el-option>
             </el-option-group>
           </el-select>
         </el-form-item>
@@ -60,19 +67,39 @@
       </el-form>
     </el-dialog>
 
-    <ul class="item-card">
+    <ul class="record-card">
       <template v-for="group in groupedRecords" :key="group.id">
-        <el-card class="box-card">
+        <el-card class="record-box">
           <template #header>
             <span>{{ group.date }}</span>
           </template>
-          <ul class="v">
-            <li v-for="record in group.records" :key="record.id" class="item">
-              <div>
-                <el-tag type="info" color="#413543" round>{{ record.type }}</el-tag>
-                <span class="e">{{ record.name }}</span>
+          <ul class="record-list">
+            <li v-for="record in group.records" :key="record.id" class="record-item">
+              <div class="record-info">
+                <el-button circle size="small" :icon="record.icon" color="#8F43EE" />
+                <span class="record-name">{{ record.name }}</span>
               </div>
-              <span>$ {{ record.price }}</span>
+              <div>
+                <span>$ {{ record.price }} </span>
+                <el-button
+                  circle
+                  class="record-btn"
+                  type="danger"
+                  color="#8F43EE"
+                  size="small"
+                  :icon="Delete"
+                  plain
+                />
+                <el-button
+                  circle
+                  class="record-btn"
+                  color="#8F43EE"
+                  type="primary"
+                  size="small"
+                  :icon="Edit"
+                  plain
+                />
+              </div>
             </li>
           </ul>
         </el-card>
@@ -86,7 +113,7 @@ import { computed, reactive, ref } from "vue";
 import { nanoid } from "nanoid";
 import useDate from "@/hooks/useDate";
 import categories from "@/config/categories";
-import { Edit } from "@element-plus/icons-vue";
+import { Edit, Delete } from "@element-plus/icons-vue";
 import { DiaryRecord } from "@/types/record";
 
 let NowDayOfWeek = useDate().NowDayOfWeek;
@@ -100,6 +127,9 @@ const form = reactive({
   price: 0,
 });
 
+const updateIcon = (icon: string) => {
+  form.icon = icon;
+};
 const records = ref([]);
 
 const addRecord = () => {
@@ -112,6 +142,7 @@ const addRecord = () => {
     name: form.name || form.type,
     price: form.price,
   };
+  console.log(newRecord);
   records.value.push(newRecord);
   setTimeout(() => {
     dialogVisible.value = false;
@@ -153,10 +184,26 @@ const showDialog = () => {
 </script>
 
 <style scoped>
-.e {
+.record-info {
+  padding-left: 5px;
+}
+li .record-btn {
+  float: right;
+  display: none;
+}
+li:hover .record-btn {
+  display: block;
+  margin-right: 6px;
+}
+
+.record-item:hover {
+  background-color: #a67cda;
+  border-radius: 7px;
+}
+.record-name {
   margin-left: 10px;
 }
-.box-card {
+.record-box {
   margin: 10px;
   width: 500px;
   color: #fff;
@@ -168,18 +215,15 @@ const showDialog = () => {
   justify-content: space-between;
   align-items: center;
 }
-.item {
+.record-item {
   display: flex;
   justify-content: space-between;
   align-items: center;
   border-bottom: 1px solid #eee;
   padding: 6px 0;
 }
-.item:hover {
-  margin-left: 4px;
-  transition: all 0.2s ease-in;
-}
-.item:last-child {
+
+.record-item:last-child {
   border-bottom: 0px;
 }
 
@@ -189,21 +233,21 @@ const showDialog = () => {
   top: 30px;
   margin: 30px;
 }
-.journal-layout {
+.diary-layout {
   height: 100%;
   display: block;
   overflow-y: scroll;
+  overflow-x: hidden;
   justify-content: start;
   align-items: center;
 }
-.item-card {
-  width: 100%;
+.record-card {
   display: flex;
   justify-content: space-between;
   align-items: center;
   flex-direction: column;
 }
-.v {
+.record-list {
   padding-inline-start: 0px;
 }
 </style>
