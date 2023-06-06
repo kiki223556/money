@@ -13,8 +13,12 @@
       </button>
       <template #dropdown>
         <el-dropdown-menu>
-          <GoogleLogin :callback="callback" />
-          <el-dropdown-item @click="logout" :icon="ArrowLeft">登出</el-dropdown-item>
+          <template v-if="!userInfo.name">
+            <GoogleLogin :callback="callback" />
+          </template>
+          <template v-else>
+            <el-dropdown-item @click="logout" :icon="ArrowLeft">登出</el-dropdown-item>
+          </template>
         </el-dropdown-menu>
       </template>
     </el-dropdown>
@@ -25,22 +29,46 @@
 import { reactive } from "vue";
 import { ArrowLeft, UserFilled } from "@element-plus/icons-vue";
 import { decodeCredential } from "vue3-google-login";
+import { ElMessage } from "element-plus";
 
 const userInfo = reactive({
   avatar: "",
   name: "",
+  email: "",
 });
 
+interface UserData {
+  picture: string;
+  name: string;
+  email: string;
+}
+
 const callback = (response: { credential: string }) => {
-  const userData = decodeCredential(response.credential);
+  const userData: UserData = decodeCredential(response.credential);
   console.log("Handle the userData", userData);
 
   userInfo.avatar = userData.picture;
   userInfo.name = userData.name;
+  userInfo.email = userData.email;
+
+  ElMessage({
+    showClose: true,
+    message: "已成功登入！",
+    type: "success",
+  });
 };
 
 const logout = () => {
   console.log("logout");
+  userInfo.avatar = "";
+  userInfo.name = "";
+  userInfo.email = "";
+
+  ElMessage({
+    showClose: true,
+    message: "已完成登出！",
+    type: "success",
+  });
 };
 </script>
 
