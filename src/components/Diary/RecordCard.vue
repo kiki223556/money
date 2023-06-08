@@ -16,20 +16,19 @@
               <el-button
                 circle
                 class="record-btn"
-                type="danger"
-                color="#8F43EE"
+                color="#8f43ee"
                 size="small"
-                :icon="Delete"
                 plain
+                :icon="Delete"
+                @click="handleDelete(record.id)"
               />
               <el-button
                 circle
                 class="record-btn"
-                color="#8F43EE"
-                type="primary"
+                color="#8f43ee"
                 size="small"
-                :icon="Edit"
                 plain
+                :icon="Edit"
               />
             </div>
           </li>
@@ -41,7 +40,16 @@
 
 <script setup lang="ts">
 import { Edit, Delete } from "@element-plus/icons-vue";
+
 defineProps(["groupedRecords"]);
+const emit = defineEmits(["deleteRecord"]);
+
+// 刪除
+const handleDelete = (id: string) => {
+  if (confirm("確定刪除嗎？")) {
+    emit("deleteRecord", id);
+  }
+};
 </script>
 
 <style scoped>
@@ -56,7 +64,6 @@ li:hover .record-btn {
   display: block;
   margin-right: 6px;
 }
-
 .record-item:hover {
   border-radius: 5px;
   background-color: #a67cda;
@@ -89,6 +96,7 @@ li:hover .record-btn {
   justify-content: space-between;
   align-items: center;
   flex-direction: column;
+  padding: 0px;
 }
 .record-list {
   padding-inline-start: 0px;
