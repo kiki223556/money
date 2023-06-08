@@ -18,6 +18,7 @@
     :visible="dialogVisible"
     width="30%"
   >
+    <!-- <RecordForm></RecordForm> -->
     <el-form :model="form" label-width="50px">
       <div class="card-header">
         <el-form-item label="日期">
@@ -79,7 +80,7 @@ import categories from "@/config/categories";
 import { Plus } from "@element-plus/icons-vue";
 import { DiaryRecord } from "@/types/record";
 import RecordCard from "@/components/Diary/RecordCard.vue";
-import { ElMessage } from "element-plus/es/components/index.js";
+// import RecordForm from "@/components/Diary/RecordForm.vue";
 
 const dialogVisible = ref(false);
 
@@ -102,7 +103,7 @@ const form = reactive({
   price: 0,
 });
 
-const records = ref([]);
+const records = ref([] as DiaryRecord[]);
 
 const addRecord = () => {
   if (!form.type) return alert("請選擇類別");
@@ -148,10 +149,10 @@ const groupedRecords = computed(() => {
   });
 });
 
-// 刪除一個todo
-const deleteRecord = (id) => {
-  // const index = todosArr.findIndex((todo) => todo.id === id);
-  // todosArr.splice(index, 1);
+// 刪除一個record
+const deleteRecord = (id: string) => {
+  const index = records.value.findIndex((record) => record.id === id);
+  records.value.splice(index, 1);
 };
 </script>
 
