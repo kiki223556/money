@@ -41,7 +41,7 @@
 <script setup lang="ts">
 import { Edit, Delete } from "@element-plus/icons-vue";
 
-defineProps(["groupedRecords"]);
+defineProps(["groupedRecords", "records"]);
 const emit = defineEmits(["deleteRecord"]);
 
 // 刪除

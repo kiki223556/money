@@ -36,7 +36,7 @@
       </el-select>
     </el-form-item>
 
-    <el-form-item label="項目">
+    <el-form-item label="品名">
       <el-input v-model="form.name" />
     </el-form-item>
 
@@ -45,27 +45,24 @@
     </el-form-item>
 
     <el-form-item>
-      <el-button type="primary" @click="addRecord">新增</el-button>
+      <el-button type="primary" @click="add">新增</el-button>
       <el-button @click="dialogVisible = false">取消</el-button>
     </el-form-item>
   </el-form>
 </template>
 
 <script setup lang="ts">
-import { computed, reactive, ref } from "vue";
+import { reactive, ref } from "vue";
 import { nanoid } from "nanoid";
+import { DiaryRecord } from "@/types/record";
 import useDate from "@/hooks/useDate";
 import categories from "@/config/categories";
-import { DiaryRecord } from "@/types/record";
 
+const emit = defineEmits(["addRecord"]);
 const dialogVisible = ref(false);
-
 let NowDayOfWeek = useDate().NowDayOfWeek;
 
-const updateIcon = (icon: string) => {
-  form.icon = icon;
-};
-
+// 初始為空表單，日期為當天
 const form = reactive({
   id: nanoid(),
   date: NowDayOfWeek,
@@ -75,9 +72,16 @@ const form = reactive({
   price: 0,
 });
 
-const records = ref([]);
+// 點擊下拉選單內容，即選定icon
+const updateIcon = (icon: string) => {
+  form.icon = icon;
+};
 
-const addRecord = () => {
+// 1.判斷類別不得為空
+// 2.將表單賦值
+// 3.將newRecord物件傳給父組件，執行addRecord()
+// 4.重置表單
+const add = () => {
   if (!form.type) return alert("請選擇類別");
   const newRecord: DiaryRecord = {
     id: nanoid(),
@@ -87,13 +91,11 @@ const addRecord = () => {
     name: form.name || form.type,
     price: form.price,
   };
-  records.value.push(newRecord);
-  setTimeout(() => {
-    dialogVisible.value = false;
-  }, 300);
+  emit("addRecord", newRecord);
   resetFormValue();
 };
 
+// 重置表單
 const resetFormValue = () => {
   form.id = nanoid();
   form.date = NowDayOfWeek;
@@ -102,24 +104,6 @@ const resetFormValue = () => {
   form.name = "";
   form.price = 0;
 };
-
-const groupedRecords = computed(() => {
-  const groups = new Map();
-  for (const record of records.value as DiaryRecord[]) {
-    if (!groups.has(record.date)) {
-      groups.set(record.date, {
-        date: record.date,
-        records: [],
-      });
-    }
-    groups.get(record.date).records.push(record);
-  }
-
-  // 卡片依日期順序，由近至遠排列
-  return Array.from(groups.values()).sort((a, b) => {
-    return b.date.localeCompare(a.date);
-  });
-});
 </script>
 
 <style scoped>
