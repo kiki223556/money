@@ -12,7 +12,8 @@
         <RecordCard
           :groupedRecords="groupedRecords"
           :records="records"
-          v-on:delete-record="deleteRecord"
+          @delete-record="deleteRecord"
+          @update-record="updateRecord"
         />
       </div>
     </div>
@@ -24,7 +25,7 @@
     title="新增一筆紀錄"
     width="30%"
   >
-    <RecordForm v-on:addRecord="addRecord" />
+    <RecordForm @addRecord="addRecord" />
   </el-dialog>
 </template>
 
@@ -73,6 +74,12 @@ const addRecord = (newRecord: DiaryRecord) => {
 const deleteRecord = (id: string) => {
   const index = records.value.findIndex((record) => record.id === id);
   records.value.splice(index, 1);
+};
+
+// 編輯一個record，未完成
+const updateRecord = (id: string) => {
+  const index = records.value.findIndex((record) => record.id === id);
+  showDialog();
 };
 </script>
 

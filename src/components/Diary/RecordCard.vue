@@ -29,6 +29,7 @@
                 size="small"
                 plain
                 :icon="Edit"
+                @click="handleEdit(record.id)"
               />
             </div>
           </li>
@@ -42,13 +43,18 @@
 import { Edit, Delete } from "@element-plus/icons-vue";
 
 defineProps(["groupedRecords", "records"]);
-const emit = defineEmits(["deleteRecord"]);
+const emit = defineEmits(["deleteRecord", "updateRecord"]);
 
 // 刪除
 const handleDelete = (id: string) => {
   if (confirm("確定刪除嗎？")) {
     emit("deleteRecord", id);
   }
+};
+
+// 編輯
+const handleEdit = (id: string) => {
+  emit("updateRecord", id);
 };
 </script>
 
