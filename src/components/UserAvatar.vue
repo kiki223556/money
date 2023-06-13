@@ -1,54 +1,65 @@
-<!-- eslint-disable prettier/prettier -->
 <template>
   <div class="avatar-container">
-    <div class="avatar-align">
-      <el-avatar v-show="!userInfo.avatar" :icon="UserFilled" />
-      <el-avatar v-show="userInfo.avatar" :src="userInfo.avatar" />
-      <span v-show="!userInfo.name">尚未登入</span>
-      <span>{{ userInfo.name }}</span>
+    <div v-if="userInfo.isLogin" class="avatar-info">
+      <div class="avatar-wrapper">
+        <el-avatar :src="userInfo.avatar" />
+        <span>{{ userInfo.name }}</span>
+      </div>
+      <el-button class="logout-btn" @click="logout">
+        <el-icon><ArrowLeft /></el-icon>
+        登出
+      </el-button>
     </div>
-    <el-dropdown>
-      <button class="more-icon">
-        <el-icon><MoreFilled /></el-icon>
-      </button>
-      <template #dropdown>
-        <el-dropdown-menu>
-          <template v-if="!userInfo.name">
-            <GoogleLogin :callback="callback" />
-          </template>
-          <template v-else>
-            <el-dropdown-item @click="logout" :icon="ArrowLeft">登出</el-dropdown-item>
-          </template>
-        </el-dropdown-menu>
-      </template>
-    </el-dropdown>
+    <div v-else class="login-btn">
+      <GoogleLogin :callback="callback" />
+    </div>
   </div>
 </template>
 
 <script lang="ts" setup>
-import { reactive } from "vue";
-import { ArrowLeft, UserFilled } from "@element-plus/icons-vue";
+import { reactive, onMounted } from "vue";
+import { ArrowLeft } from "@element-plus/icons-vue";
 import { decodeCredential } from "vue3-google-login";
 import { ElMessage } from "element-plus";
-import { getLoginApi } from "@/api/login";
+import { postLoginApi } from "@/api/login";
 import { useUserStore } from "@/store/modules/user";
 import { UserData } from "@/types/userData";
 
 const userInfo = reactive({
+  isLogin: false,
   avatar: "",
   name: "",
   email: "",
   password: "password",
 });
 
+// 在應用程序初始化時，從持久化存儲中讀取用戶登入狀態
+onMounted(() => {
+  const storedUser = localStorage.getItem("user");
+  if (storedUser) {
+    const { avatar, name } = JSON.parse(storedUser);
+    userInfo.avatar = avatar;
+    userInfo.name = name;
+    userInfo.isLogin = true;
+  }
+});
+
 const callback = (response: { credential: string }) => {
   const userData: UserData = decodeCredential(response.credential);
+  console.log(response);
 
+  userInfo.isLogin = true;
   userInfo.avatar = userData.picture;
   userInfo.name = userData.name;
   userInfo.email = userData.email;
 
-  getLoginApi({
+  // 在應用程序初始化時，從持久化存儲中讀取用戶登入狀態
+  localStorage.setItem(
+    "user",
+    JSON.stringify({ avatar: userData.picture, name: userData.name })
+  );
+
+  postLoginApi({
     username: userInfo.name,
     password: "password",
     email: userData.email,
@@ -76,6 +87,7 @@ const callback = (response: { credential: string }) => {
 
 const logout = () => {
   console.log("logout");
+  userInfo.isLogin = false;
   userInfo.avatar = "";
   userInfo.name = "";
   userInfo.email = "";
@@ -89,10 +101,6 @@ const logout = () => {
 </script>
 
 <style scoped>
-.avatar-align {
-  display: flex;
-  align-items: center;
-}
 .avatar-container {
   border: 0px;
   border-top: 1px solid #fff;
@@ -101,17 +109,27 @@ const logout = () => {
   position: absolute;
   bottom: 20px;
   padding: 15px 0px;
-  display: flex;
-  justify-content: space-between;
 
   background-color: transparent;
   color: #fff;
 }
-
+.avatar-info {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.avatar-wrapper {
+  display: flex;
+  align-items: center;
+}
+.login-btn {
+  margin-top: 12px;
+  display: flex;
+}
 .el-avatar {
   margin-right: 10px;
 }
-.more-icon {
+.logout-btn {
   cursor: pointer;
   margin: 10px 5px 10px 0;
   background-color: transparent;
@@ -119,7 +137,8 @@ const logout = () => {
   color: #fff;
 }
 
-.more-icon:hover {
+.logout-btn:hover {
   background-color: #67586a;
+  color: #fff;
 }
 </style>

@@ -1,5 +1,6 @@
 import axios from "axios";
 import { ElMessage } from "element-plus";
+import { postRefreshTokenApi } from "@/api/refreshToken";
 import { get } from "lodash-es";
 
 // 設置基本的URL和默認的請求配置
@@ -14,7 +15,7 @@ const request = axios.create({
 // 添加請求攔截器：對每筆請求設置request.headers的預處理
 request.interceptors.request.use((config) => {
   // 從本地存儲中獲取 JWT，並將其添加到請求的 Authorization 標頭中
-  const jwtToken = localStorage.getItem("token");
+  const jwtToken = localStorage.getItem("access_token");
   config.headers["Authorization"] = jwtToken ? `Bearer ${jwtToken}` : null;
   return config;
 });
@@ -45,8 +46,10 @@ request.interceptors.response.use(
         break;
       case 401:
         // Token過期時，直接退出登錄並強制刷新頁面
-        useUserStoreHook().logout();
-        location.reload();
+        return postRefreshTokenApi(error).then(() => {
+          location.reload();
+        });
+        // useUserStoreHook().logout();
         break;
       case 403:
         error.message = "拒絕訪問";
