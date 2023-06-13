@@ -52,19 +52,26 @@ const callback = (response: { credential: string }) => {
     username: userInfo.name,
     password: "password",
     email: userData.email,
-  }).then((res) => {
-    const store = useUserStore();
-    const access_token = res.access_token;
-    const refresh_token = res.refresh_token;
-    store.setAccessToken(access_token);
-    store.setRefreshToken(refresh_token);
-  });
-
-  ElMessage({
-    showClose: true,
-    message: "已成功登入！",
-    type: "success",
-  });
+  })
+    .then((res) => {
+      const store = useUserStore();
+      const access_token = res.access_token;
+      const refresh_token = res.refresh_token;
+      store.setAccessToken(access_token);
+      store.setRefreshToken(refresh_token);
+      ElMessage({
+        showClose: true,
+        message: "已成功登入！",
+        type: "success",
+      });
+    })
+    .catch((error) => {
+      ElMessage({
+        showClose: true,
+        message: `登錄出錯，${error}`,
+        type: "error",
+      });
+    });
 };
 
 const logout = () => {
