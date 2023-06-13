@@ -30,8 +30,9 @@ import { reactive } from "vue";
 import { ArrowLeft, UserFilled } from "@element-plus/icons-vue";
 import { decodeCredential } from "vue3-google-login";
 import { ElMessage } from "element-plus";
-import { getRegisterApi } from "@/api/register";
 import { getLoginApi } from "@/api/login";
+import { useUserStore } from "@/store/modules/user";
+import { UserData } from "@/types/userData";
 
 const userInfo = reactive({
   avatar: "",
@@ -40,13 +41,6 @@ const userInfo = reactive({
   password: "password",
 });
 
-interface UserData {
-  picture: string;
-  name: string;
-  email: string;
-  password: string;
-}
-
 const callback = (response: { credential: string }) => {
   const userData: UserData = decodeCredential(response.credential);
 
@@ -54,19 +48,16 @@ const callback = (response: { credential: string }) => {
   userInfo.name = userData.name;
   userInfo.email = userData.email;
 
-  // getRegisterApi({
-  //   password: "password",
-  //   username: userInfo.name,
-  //   email: userInfo.email,
-  // }).then((res) => {
-  //   console.log("register", res);
-  // });
-
   getLoginApi({
-    password: "password",
     username: userInfo.name,
+    password: "password",
+    email: userData.email,
   }).then((res) => {
-    console.log("login", res);
+    const store = useUserStore();
+    const access_token = res.access_token;
+    const refresh_token = res.refresh_token;
+    store.setAccessToken(access_token);
+    store.setRefreshToken(refresh_token);
   });
 
   ElMessage({

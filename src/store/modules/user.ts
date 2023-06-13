@@ -2,24 +2,30 @@ import { defineStore } from "pinia";
 import store from "@/store/index";
 
 export const useUserStore = defineStore("user", () => {
+  // 初始化token為空
   const state = {
-    jwtToken: "",
-    username: "",
+    access_token: "",
+    refresh_token: "",
   };
 
-  // 在創建 store 時，可以從 localStorage 中讀取 jwtToken 並設置到 state 中
-  state.jwtToken = localStorage.getItem("token") || "";
+  // 在創建store時，會從localStorage中嘗試讀取token並設置到state中
+  state.access_token = localStorage.getItem("access_token") || "";
+  state.refresh_token = localStorage.getItem("refresh_token") || "";
 
-  // 定義操作 state 的方法
-  const setJwtToken = (token: string) => {
-    state.jwtToken = token;
-    // 在設置 jwtToken 時，同時更新 localStorage 中的值
-    localStorage.setItem("token", token);
+  // 在呼叫方法並傳入新的token時，會同時更新token狀態並更新localStorage中token的值
+  const setAccessToken = (token: string) => {
+    state.access_token = token;
+    localStorage.setItem("access_token", token);
+  };
+  const setRefreshToken = (token: string) => {
+    state.refresh_token = token;
+    localStorage.setItem("refresh_token", token);
   };
 
   return {
     state,
-    setJwtToken,
+    setAccessToken,
+    setRefreshToken,
   };
 });
 
