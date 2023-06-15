@@ -20,12 +20,11 @@
 </template>
 
 <script lang="ts" setup>
-import { computed, ref } from "vue";
+import { computed } from "vue";
 import UserAvatar from "./UserAvatar.vue";
 import menuLists from "@/config/menuLists";
 import { useRoute } from "vue-router";
 
-const isCollapse = ref(true);
 const route = useRoute();
 
 const handleIndex = computed(() => {
