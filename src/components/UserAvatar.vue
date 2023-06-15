@@ -22,6 +22,7 @@ import { ArrowLeft } from "@element-plus/icons-vue";
 import { decodeCredential } from "vue3-google-login";
 import { ElMessage } from "element-plus";
 import { postLoginApi } from "@/api/login";
+import { postLogoutApi } from "@/api/logout";
 import { useUserStore } from "@/store/modules/user";
 import { UserData } from "@/types/userData";
 
@@ -84,19 +85,25 @@ const callback = (response: { credential: string }) => {
     });
 };
 
-const logout = () => {
-  console.log("logout");
-  userInfo.isLogin = false;
-  userInfo.avatar = "";
-  userInfo.name = "";
-  userInfo.email = "";
+async function logout() {
+  try {
+    await postLogoutApi();
+    localStorage.removeItem("access_token");
+    localStorage.removeItem("refresh_token");
+    localStorage.removeItem("user");
 
-  ElMessage({
-    showClose: true,
-    message: "已完成登出！",
-    type: "success",
-  });
-};
+    console.log("logout successful");
+    userInfo.isLogin = false;
+
+    ElMessage({
+      showClose: true,
+      message: "已完成登出！",
+      type: "success",
+    });
+  } catch (error) {
+    console.error("Logout failed:", error);
+  }
+}
 </script>
 
 <style scoped>
