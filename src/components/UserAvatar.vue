@@ -21,8 +21,8 @@ import { reactive, onMounted } from "vue";
 import { ArrowLeft } from "@element-plus/icons-vue";
 import { decodeCredential } from "vue3-google-login";
 import { ElMessage } from "element-plus";
-import { postLoginApi } from "@/api/login";
-import { postLogoutApi } from "@/api/logout";
+import { postLoginApi } from "@/api/auth/login";
+import { postLogoutApi } from "@/api/auth/logout";
 import { useUserStore } from "@/store/modules/user";
 import { UserData } from "@/types/userData";
 

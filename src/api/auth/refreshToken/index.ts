@@ -1,9 +1,9 @@
 import request from "@/utils/axios";
-import type * as Token from "@/api/refreshToken/type/refreshToken";
+import type * as Token from "@/api/auth/refreshToken/type/refreshToken";
 
 export function postRefreshTokenApi(data: Token.TokenRequestData) {
   return request
-    .post<Token.TokenReponseData>("refresh-token", data)
+    .post<Token.TokenReponseData>("auth/refresh-token", data)
     .then((response) => {
       // 確認 response 不為空值
       if (response?.status === 200) {

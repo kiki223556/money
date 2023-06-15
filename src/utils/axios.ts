@@ -1,12 +1,12 @@
 import axios from "axios";
 import { ElMessage } from "element-plus";
-import { postRefreshTokenApi } from "@/api/refreshToken";
+import { postRefreshTokenApi } from "@/api/auth/refreshToken";
 import { get } from "lodash-es";
 import { useTokenStore } from "@/store/modules/token";
 
 // 設置基本的URL和默認的請求配置
 const request = axios.create({
-  baseURL: "http://localhost:8081/api/v1/auth",
+  baseURL: "http://localhost:8081/api/v1",
   timeout: 5000,
   headers: {
     "Content-Type": "application/json; charset=utf-8",

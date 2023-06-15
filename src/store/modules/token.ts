@@ -1,6 +1,6 @@
 import { defineStore } from "pinia";
-import { postRefreshTokenApi } from "@/api/refreshToken";
-import { TokenRequestData } from "@/api/refreshToken/type/refreshToken";
+import { postRefreshTokenApi } from "@/api/auth/refreshToken";
+import { TokenRequestData } from "@/api/auth/refreshToken/type/refreshToken";
 import { ElMessage } from "element-plus";
 import jwt_decode from "jwt-decode";
 import { DecodedToken } from "@/types/decodedToken";
