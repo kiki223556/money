@@ -1,8 +1,7 @@
 import { defineStore } from "pinia";
-import store from "@/store/index";
 
 export const useUserStore = defineStore("user", () => {
-  // 初始化token為空
+  // 初始化token和用戶資訊為空
   const state = {
     access_token: "",
     refresh_token: "",
@@ -28,8 +27,3 @@ export const useUserStore = defineStore("user", () => {
     setRefreshToken,
   };
 });
-
-/** 在 setup 外使用 */
-export function useUserStoreHook() {
-  return useUserStore(store);
-}

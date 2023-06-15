@@ -2,6 +2,7 @@ import axios from "axios";
 import { ElMessage } from "element-plus";
 import { postRefreshTokenApi } from "@/api/refreshToken";
 import { get } from "lodash-es";
+import { useTokenStore } from "@/store/modules/token";
 
 // 設置基本的URL和默認的請求配置
 const request = axios.create({
@@ -15,8 +16,11 @@ const request = axios.create({
 // 添加請求攔截器：對每筆請求設置request.headers的預處理
 request.interceptors.request.use((config) => {
   // 從本地存儲中獲取 JWT，並將其添加到請求的 Authorization 標頭中
-  const jwtToken = localStorage.getItem("access_token");
-  config.headers["Authorization"] = jwtToken ? `Bearer ${jwtToken}` : null;
+  const accessToken = localStorage.getItem("access_token");
+  config.headers["Authorization"] = accessToken ? `Bearer ${accessToken}` : null;
+  // 檢查token是否過期，並在需要時進行刷新
+  const tokenStore = useTokenStore();
+  tokenStore.monitorAccessTokenExpiration();
   return config;
 });
 

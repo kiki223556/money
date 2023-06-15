@@ -1,7 +1,8 @@
-export interface TokenRequestData {
-  username: string;
-  password: string;
-  email: string;
+export interface TokenReponseData {
   access_token: string;
+  refresh_token: string;
+}
+
+export interface TokenRequestData {
   refresh_token: string;
 }

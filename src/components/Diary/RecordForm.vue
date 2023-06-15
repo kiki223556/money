@@ -52,7 +52,7 @@
 </template>
 
 <script setup lang="ts">
-import { reactive, ref } from "vue";
+import { reactive, ref, watch } from "vue";
 import { nanoid } from "nanoid";
 import { DiaryRecord } from "@/types/record";
 import useDate from "@/hooks/useDate";
@@ -63,7 +63,7 @@ const dialogVisible = ref(false);
 let NowDayOfWeek = useDate().NowDayOfWeek;
 
 // 初始為空表單，日期為當天
-const form = reactive({
+const form = reactive<DiaryRecord>({
   id: nanoid(),
   date: NowDayOfWeek,
   icon: "",
@@ -71,6 +71,15 @@ const form = reactive({
   name: "",
   price: 0,
 });
+
+watch(
+  () => form.price,
+  (newPrice) => {
+    if (typeof newPrice !== "number") {
+      form.price = parseFloat(newPrice) || 0;
+    }
+  }
+);
 
 // 點擊下拉選單內容，即選定icon
 const updateIcon = (icon: string) => {

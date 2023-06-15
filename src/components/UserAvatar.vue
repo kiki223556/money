@@ -46,7 +46,6 @@ onMounted(() => {
 
 const callback = (response: { credential: string }) => {
   const userData: UserData = decodeCredential(response.credential);
-  console.log(response);
 
   userInfo.isLogin = true;
   userInfo.avatar = userData.picture;
@@ -65,11 +64,11 @@ const callback = (response: { credential: string }) => {
     email: userData.email,
   })
     .then((res) => {
-      const store = useUserStore();
+      const userStore = useUserStore();
       const access_token = res.access_token;
       const refresh_token = res.refresh_token;
-      store.setAccessToken(access_token);
-      store.setRefreshToken(refresh_token);
+      userStore.setAccessToken(access_token);
+      userStore.setRefreshToken(refresh_token);
       ElMessage({
         showClose: true,
         message: "已成功登入！",
