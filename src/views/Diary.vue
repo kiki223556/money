@@ -23,7 +23,7 @@
     :visible="dialogVisible"
     v-model="dialogVisible"
     title="新增一筆紀錄"
-    width="30%"
+    width="400px"
   >
     <RecordForm @addRecord="addRecord" />
   </el-dialog>
@@ -119,7 +119,7 @@ const updateRecord = (id: string) => {
 }
 .btn-gradient-background {
   position: fixed;
-  height: 100px;
+  height: 90px;
   background: linear-gradient(to top, rgba(45, 39, 39, 0), rgba(45, 39, 39, 1) 30px);
   z-index: 999;
   width: 700px;
@@ -136,5 +136,13 @@ const updateRecord = (id: string) => {
   overflow-x: hidden;
   justify-content: start;
   align-items: center;
+}
+@media (max-width: 1000px) {
+  .btn-gradient-background {
+    width: 400px;
+  }
+  .btn-show-dialog {
+    width: 300px;
+  }
 }
 </style>

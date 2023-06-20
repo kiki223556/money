@@ -84,6 +84,11 @@ li:hover .record-btn {
   color: #fff;
   background-color: #413543;
 }
+@media (max-width: 1000px) {
+  .record-box {
+    width: 400px;
+  }
+}
 
 .record-item {
   display: flex;

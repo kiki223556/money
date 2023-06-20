@@ -53,18 +53,19 @@
 
 <script setup lang="ts">
 import { reactive, ref, watch } from "vue";
-import { nanoid } from "nanoid";
 import { DiaryRecord } from "@/types/record";
 import useDate from "@/hooks/useDate";
 import categories from "@/config/categories";
+import { postCreateRecordApi } from "@/api/diaryRecords/createRecord";
+import { useRecordStore } from "@/store/modules/record";
 
 const emit = defineEmits(["addRecord"]);
 const dialogVisible = ref(false);
 let NowDayOfWeek = useDate().NowDayOfWeek;
+let ISO8601 = useDate().ISO8601;
 
 // 初始為空表單，日期為當天
 const form = reactive<DiaryRecord>({
-  id: nanoid(),
   date: NowDayOfWeek,
   icon: "",
   type: "",
@@ -90,23 +91,37 @@ const updateIcon = (icon: string) => {
 // 2.將表單賦值
 // 3.將newRecord物件傳給父組件，執行addRecord()
 // 4.重置表單
-const add = () => {
+const add = async () => {
   if (!form.type) return alert("請選擇類別");
   const newRecord: DiaryRecord = {
-    id: nanoid(),
     date: form.date,
     icon: form.icon,
     type: form.type,
     name: form.name || form.type,
     price: form.price,
   };
-  emit("addRecord", newRecord);
-  resetFormValue();
+
+  try {
+    const response = await postCreateRecordApi({
+      date: ISO8601,
+      icon: form.icon,
+      type: form.type,
+      name: form.name || form.type,
+      price: form.price,
+    });
+
+    const id = response.id;
+    console.log("生成的 ID:", id);
+
+    emit("addRecord", newRecord);
+    resetFormValue();
+  } catch (error) {
+    console.error("API 调用失败:", error);
+  }
 };
 
 // 重置表單
 const resetFormValue = () => {
-  form.id = nanoid();
   form.date = NowDayOfWeek;
   form.icon = "";
   form.type = "";

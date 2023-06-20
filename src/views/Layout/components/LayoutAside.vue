@@ -21,4 +21,10 @@ import SideMenu from "@/components/SideMenu.vue";
 .aside-text {
   color: #fff;
 }
+
+@media (max-width: 1000px) {
+  .aside-layout {
+    width: 70px;
+  }
+}
 </style>

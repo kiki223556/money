@@ -60,7 +60,7 @@ const callback = (response: { credential: string }) => {
   );
 
   postLoginApi({
-    username: userInfo.name,
+    username: userData.name,
     password: "password",
     email: userData.email,
   })
@@ -146,5 +146,16 @@ async function logout() {
 .logout-btn:hover {
   background-color: #67586a;
   color: #fff;
+}
+@media (max-width: 1000px) {
+  .avatar-container {
+    border: none;
+  }
+  .avatar-wrapper {
+    display: none;
+  }
+  .avatar-container {
+    margin: 0px;
+  }
 }
 </style>
