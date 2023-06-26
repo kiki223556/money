@@ -2,19 +2,19 @@
   <div class="diary-layout container">
     <div class="btn-and-record-block">
       <!-- 新增紀錄的按鈕 -->
-      <div class="btn-gradient-background" />
-      <div class="btn-show-dialog" @click="showDialog">
-        <el-icon class="btn-icon"><Plus /></el-icon>
-        新增一筆紀錄
+      <div style="display: contents">
+        <div class="btn-gradient-background" />
+        <div style="position: fixed; display: flex; top: 15px">
+          <YearMonthPicker @date-selected="fetchRecordsByMonth" />
+          <div class="btn-show-dialog" @click="showDialog">
+            <el-icon class="btn-icon"><Plus /></el-icon>
+            新增紀錄
+          </div>
+        </div>
       </div>
       <!--  記帳紀錄的卡片組件-->
-      <div class="record-block">
-        <RecordCard
-          :groupedRecords="groupedRecords"
-          :records="records"
-          @delete-record="deleteRecord"
-          @update-record="updateRecord"
-        />
+      <div>
+        <RecordCard />
       </div>
     </div>
   </div>
@@ -25,62 +25,26 @@
     title="新增一筆紀錄"
     width="400px"
   >
-    <RecordForm @addRecord="addRecord" />
+    <RecordForm @closeDialog="closeDialog" />
   </el-dialog>
 </template>
 
 <script lang="ts" setup>
-import { computed, ref } from "vue";
-import { DiaryRecord } from "@/types/record";
+import { ref } from "vue";
 import { Plus } from "@element-plus/icons-vue";
 import RecordCard from "@/components/Diary/RecordCard.vue";
 import RecordForm from "@/components/Diary/RecordForm.vue";
+import YearMonthPicker from "@/components/YearMonthPicker.vue";
+import _ from "lodash";
+import { useRecordStore } from "@/store/modules/record";
 
 // 表單是否可見
 const dialogVisible = ref(false);
 const showDialog = () => (dialogVisible.value = true);
+const closeDialog = () => (dialogVisible.value = false);
 
-// 初始為空數組
-const records = ref([] as DiaryRecord[]);
-
-// 1.依日期新增卡片
-// 2.日期相同就將紀錄新增在同一張卡片，反之，則新建一張卡片
-// 3.依日期順序，由近至遠排列
-const groupedRecords = computed(() => {
-  const groups = new Map();
-  for (const record of records.value as DiaryRecord[]) {
-    if (!groups.has(record.date)) {
-      groups.set(record.date, {
-        date: record.date,
-        records: [],
-      });
-    }
-    groups.get(record.date).records.push(record);
-  }
-  return Array.from(groups.values()).sort((a, b) => {
-    return b.date.localeCompare(a.date);
-  });
-});
-
-// 新增一個record
-const addRecord = (newRecord: DiaryRecord) => {
-  records.value.push(newRecord);
-  setTimeout(() => {
-    dialogVisible.value = false;
-  }, 300);
-};
-
-// 刪除一個record
-const deleteRecord = (id: string) => {
-  const index = records.value.findIndex((record) => record.id === id);
-  records.value.splice(index, 1);
-};
-
-// 編輯一個record，未完成
-const updateRecord = (id: string) => {
-  const index = records.value.findIndex((record) => record.id === id);
-  showDialog();
-};
+const recordStore = useRecordStore();
+const fetchRecordsByMonth = recordStore.fetchRecordsByMonth;
 </script>
 
 <style scoped>
@@ -89,9 +53,10 @@ const updateRecord = (id: string) => {
   position: relative;
   top: 60px;
   z-index: 0;
+  margin-bottom: 170px;
 }
 .btn-icon {
-  padding-right: 10px;
+  padding-right: 6px;
 }
 .btn-and-record-block {
   display: flex;
@@ -100,15 +65,14 @@ const updateRecord = (id: string) => {
 }
 .btn-show-dialog {
   cursor: pointer;
-  position: fixed;
-  min-height: 40px;
+  min-height: 30px;
   border: 1px solid #fff;
   background-color: #f0eb8d;
   color: black;
   z-index: 999;
   border-radius: 30px;
-  width: 500px;
-  margin: 20px 10px 0 10px;
+  width: 200px;
+  margin: 0 10px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -119,9 +83,9 @@ const updateRecord = (id: string) => {
 }
 .btn-gradient-background {
   position: fixed;
-  height: 90px;
+  top: 0px;
+  height: 80px;
   background: linear-gradient(to top, rgba(45, 39, 39, 0), rgba(45, 39, 39, 1) 30px);
-  z-index: 999;
   width: 700px;
 }
 .card-header {
@@ -137,12 +101,14 @@ const updateRecord = (id: string) => {
   justify-content: start;
   align-items: center;
 }
+
 @media (max-width: 1000px) {
   .btn-gradient-background {
-    width: 400px;
+    width: 410px;
   }
   .btn-show-dialog {
-    width: 300px;
+    width: 120px;
+    font-size: 10px;
   }
 }
 </style>
