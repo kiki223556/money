@@ -47,7 +47,6 @@ onMounted(() => {
 
 const callback = (response: { credential: string }) => {
   const userData: UserData = decodeCredential(response.credential);
-
   userInfo.isLogin = true;
   userInfo.avatar = userData.picture;
   userInfo.name = userData.name;

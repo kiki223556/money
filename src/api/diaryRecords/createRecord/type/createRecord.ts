@@ -1,4 +1,5 @@
 export interface CreateRecordRequestData {
+  id: number;
   date: string;
   icon: string;
   type: string;

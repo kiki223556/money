@@ -41,8 +41,11 @@
 
 <script setup lang="ts">
 import { Edit, Delete } from "@element-plus/icons-vue";
+import { useRecordStore } from "@/store/modules/record";
 
-defineProps(["groupedRecords", "records"]);
+const recordStore = useRecordStore();
+const groupedRecords = recordStore.groupedRecords;
+
 const emit = defineEmits(["deleteRecord", "updateRecord"]);
 
 // 刪除
@@ -107,6 +110,7 @@ li:hover .record-btn {
   justify-content: space-between;
   align-items: center;
   flex-direction: column;
+  margin-top: 50px;
   padding: 0px;
 }
 .record-list {
