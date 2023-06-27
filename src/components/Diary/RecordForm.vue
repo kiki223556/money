@@ -24,7 +24,7 @@
             :key="item.id"
             :label="item.type"
             :value="item.type"
-            @click="recordStore.updateIcon(item.icon)"
+            @click="recordStore.selectIcon(item.icon)"
           >
             <el-button
               style="border: 0px; background-color: transparent"

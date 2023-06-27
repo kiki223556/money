@@ -42,23 +42,17 @@
 <script setup lang="ts">
 import { Edit, Delete } from "@element-plus/icons-vue";
 import { useRecordStore } from "@/store/modules/record";
-import { toRefs, watch } from "vue";
+import { toRefs } from "vue";
 
 const recordStore = useRecordStore();
 const { groupedRecords } = toRefs(recordStore);
 
-watch(groupedRecords, (newGroupedRecords) => {
-  groupedRecords.value.splice(0, groupedRecords.value.length, ...newGroupedRecords);
-});
-
-// const emit = defineEmits(["deleteRecord", "updateRecord"]);
-
-// // 刪除
-// const handleDelete = (id: string) => {
-//   if (confirm("確定刪除嗎？")) {
-//     emit("deleteRecord", id);
-//   }
-// };
+// 刪除
+const handleDelete = (id: number) => {
+  if (confirm("確定刪除嗎？")) {
+    recordStore.deleteRecord(id);
+  }
+};
 
 // // 編輯
 // const handleEdit = (id: string) => {

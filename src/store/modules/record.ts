@@ -1,18 +1,19 @@
 import { postCreateRecordApi } from "@/api/diaryRecords/createRecord";
+import { getRecordByIdApi } from "@/api/diaryRecords/getRecordById";
 import { getRecordByMonthApi } from "@/api/diaryRecords/getReocrdByMonth";
 import useDate, {
   transformedDateToDayOfWeek,
   transformedDateWithoutDayOfWeek,
 } from "@/hooks/useDate";
 import { DiaryRecord } from "@/types/record";
-import _ from "lodash";
 import { defineStore } from "pinia";
-import { computed, reactive, toRaw, watch } from "vue";
+import { computed, reactive, watch } from "vue";
 
 export const useRecordStore = defineStore("record", () => {
-  // 初始為空數組
+  // 初始化紀錄為空數組
   const records = reactive<DiaryRecord[]>([]);
-  // 表單
+
+  // 初始化表單為空數組
   const nowDate = useDate().NowDayOfWeek;
   const form = reactive<DiaryRecord>({
     id: 0,
@@ -23,6 +24,7 @@ export const useRecordStore = defineStore("record", () => {
     price: 0,
   });
 
+  // 監聽表單中價格字段的變化，如果不是數字則轉換為數字類型
   watch(
     () => form.price,
     (newPrice) => {
@@ -32,15 +34,10 @@ export const useRecordStore = defineStore("record", () => {
     }
   );
 
-  // 點擊下拉選單內容，即選定icon
-  const updateIcon = (icon: string) => {
-    form.icon = icon;
-  };
+  // 選擇表單中的圖標
+  const selectIcon = (icon: string) => (form.icon = icon);
 
-  // 1.判斷類別不得為空
-  // 2.將表單賦值
-  // 3.將newRecord物件傳給父組件，執行addRecord()
-  // 4.重置表單
+  // 提交表單，新增一筆記錄
   const add = async () => {
     try {
       const response = await postCreateRecordApi({
@@ -57,15 +54,14 @@ export const useRecordStore = defineStore("record", () => {
         price: response.price,
       };
       records.push(newRecord);
-      records.splice(0, records.length, ...toRaw(records));
       console.log("record:", records);
       resetFormValue();
     } catch (error) {
-      console.error("API 调用失败:", error);
+      console.error("Failed to add:", error);
     }
   };
 
-  // 重置表單
+  // 重置表單數據
   const resetFormValue = () => {
     Object.assign(form, {
       id: 0,
@@ -77,9 +73,17 @@ export const useRecordStore = defineStore("record", () => {
     });
   };
 
-  // 1.依日期新增卡片
-  // 2.日期相同就將紀錄新增在同一張卡片，反之，則新建一張卡片
-  // 3.依日期順序，由近至遠排列
+  // 新增一筆紀錄
+  const createRecord = async (record: DiaryRecord) => {
+    try {
+      const response = await postCreateRecordApi(record);
+      records.push(response.data);
+    } catch (error) {
+      console.error("Failed to createRecord:", error);
+    }
+  };
+
+  // 根據日期將紀錄進行分組，並按日期排序
   const groupedRecords = computed(() => {
     const groups: { [date: string]: { date: string; records: DiaryRecord[] } } = {};
     for (const record of records) {
@@ -87,10 +91,15 @@ export const useRecordStore = defineStore("record", () => {
         groups[record.date] = { date: record.date, records: [] };
       }
       groups[record.date].records.push(record);
+
+      watch(groupedRecords, (newGroupedRecords) => {
+        groupedRecords.value.splice(0, groupedRecords.value.length, ...newGroupedRecords);
+      });
     }
     return Object.values(groups).sort((a, b) => b.date.localeCompare(a.date));
   });
 
+  // 根據年月獲取對應的紀錄數據
   const fetchRecordsByMonth = async (data: { year: number; month: number }) => {
     const { year, month } = data;
     try {
@@ -105,30 +114,23 @@ export const useRecordStore = defineStore("record", () => {
           name: record.name || record.type,
           price: record.price,
         });
-        records.splice(0, records.length, ...toRaw(records));
       }
     } catch (error) {
-      console.error("Failed to fetch records:", error);
+      console.error("Failed to fetchRecordsByMonth:", error);
     }
   };
 
-  const createRecord = async (record: DiaryRecord) => {
+  const deleteRecord = async (id: number) => {
     try {
-      const response = await postCreateRecordApi(record);
-      records.push(response.data);
+      await getRecordByIdApi({ id });
+      const index = records.findIndex((record) => record.id === id);
+      if (index !== -1) {
+        records.splice(index, 1);
+      }
     } catch (error) {
-      console.error("Failed to create record:", error);
+      console.error("Failed to deleteRecord:", error);
     }
   };
-
-  // async function deleteRecord(recordId: string) {
-  //   try {
-  //     await deleteRecordApi(recordId);
-  //     records = records.filter((record) => record.id !== recordId);
-  //   } catch (error) {
-  //     console.error("Failed to delete record:", error);
-  //   }
-  // }
 
   // async function updateRecord(record: DiaryRecord) {
   //   try {
@@ -145,11 +147,12 @@ export const useRecordStore = defineStore("record", () => {
   return {
     form,
     add,
-    updateIcon,
+    selectIcon,
     resetFormValue,
     records,
     groupedRecords,
     fetchRecordsByMonth,
     createRecord,
+    deleteRecord,
   };
 });
