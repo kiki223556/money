@@ -6,6 +6,7 @@
         <div class="btn-gradient-background" />
         <div style="position: fixed; display: flex; top: 15px">
           <YearMonthPicker @date-selected="fetchRecordsByMonth" />
+          <!-- <YearMonthPicker @date-selected="fetchRecordsByMonth" /> -->
           <div class="btn-show-dialog" @click="showDialog">
             <el-icon class="btn-icon"><Plus /></el-icon>
             新增紀錄
@@ -35,7 +36,6 @@ import { Plus } from "@element-plus/icons-vue";
 import RecordCard from "@/components/Diary/RecordCard.vue";
 import RecordForm from "@/components/Diary/RecordForm.vue";
 import YearMonthPicker from "@/components/YearMonthPicker.vue";
-import _ from "lodash";
 import { useRecordStore } from "@/store/modules/record";
 
 // 表單是否可見
@@ -48,13 +48,6 @@ const fetchRecordsByMonth = recordStore.fetchRecordsByMonth;
 </script>
 
 <style scoped>
-.record-block {
-  display: block;
-  position: relative;
-  top: 60px;
-  z-index: 0;
-  margin-bottom: 170px;
-}
 .btn-icon {
   padding-right: 6px;
 }
@@ -88,11 +81,7 @@ const fetchRecordsByMonth = recordStore.fetchRecordsByMonth;
   background: linear-gradient(to top, rgba(45, 39, 39, 0), rgba(45, 39, 39, 1) 30px);
   width: 700px;
 }
-.card-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
+
 .diary-layout {
   height: 100%;
   display: block;

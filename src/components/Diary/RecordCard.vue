@@ -42,23 +42,28 @@
 <script setup lang="ts">
 import { Edit, Delete } from "@element-plus/icons-vue";
 import { useRecordStore } from "@/store/modules/record";
+import { toRefs, watch } from "vue";
 
 const recordStore = useRecordStore();
-const groupedRecords = recordStore.groupedRecords;
+const { groupedRecords } = toRefs(recordStore);
 
-const emit = defineEmits(["deleteRecord", "updateRecord"]);
+watch(groupedRecords, (newGroupedRecords) => {
+  groupedRecords.value.splice(0, groupedRecords.value.length, ...newGroupedRecords);
+});
 
-// 刪除
-const handleDelete = (id: string) => {
-  if (confirm("確定刪除嗎？")) {
-    emit("deleteRecord", id);
-  }
-};
+// const emit = defineEmits(["deleteRecord", "updateRecord"]);
 
-// 編輯
-const handleEdit = (id: string) => {
-  emit("updateRecord", id);
-};
+// // 刪除
+// const handleDelete = (id: string) => {
+//   if (confirm("確定刪除嗎？")) {
+//     emit("deleteRecord", id);
+//   }
+// };
+
+// // 編輯
+// const handleEdit = (id: string) => {
+//   emit("updateRecord", id);
+// };
 </script>
 
 <style scoped>
@@ -75,7 +80,7 @@ li:hover .record-btn {
 }
 .record-item:hover {
   border-radius: 5px;
-  background-color: #a67cda;
+  background-color: #aa75ea;
   transition: all 0.2s ease-in-out;
 }
 .record-name {

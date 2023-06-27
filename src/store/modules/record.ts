@@ -7,9 +7,11 @@ import useDate, {
 import { DiaryRecord } from "@/types/record";
 import _ from "lodash";
 import { defineStore } from "pinia";
-import { computed, reactive, watch } from "vue";
+import { computed, reactive, toRaw, watch } from "vue";
 
 export const useRecordStore = defineStore("record", () => {
+  // 初始為空數組
+  const records = reactive<DiaryRecord[]>([]);
   // 表單
   const nowDate = useDate().NowDayOfWeek;
   const form = reactive<DiaryRecord>({
@@ -48,13 +50,15 @@ export const useRecordStore = defineStore("record", () => {
       console.log("資料:", response);
       const newRecord = {
         id: response.id,
-        date: response.date,
+        date: transformedDateToDayOfWeek(response.date),
         icon: response.icon,
         type: response.type,
-        name: response.name,
+        name: response.name || response.type,
         price: response.price,
       };
-      addRecord(newRecord);
+      records.push(newRecord);
+      records.splice(0, records.length, ...toRaw(records));
+      console.log("record:", records);
       resetFormValue();
     } catch (error) {
       console.error("API 调用失败:", error);
@@ -63,16 +67,15 @@ export const useRecordStore = defineStore("record", () => {
 
   // 重置表單
   const resetFormValue = () => {
-    form.id = 0;
-    form.date = nowDate;
-    form.icon = "";
-    form.type = "";
-    form.name = "";
-    form.price = 0;
+    Object.assign(form, {
+      id: 0,
+      date: nowDate,
+      icon: "",
+      type: "",
+      name: "",
+      price: 0,
+    });
   };
-
-  // 初始為空數組
-  const records = reactive([] as DiaryRecord[]);
 
   // 1.依日期新增卡片
   // 2.日期相同就將紀錄新增在同一張卡片，反之，則新建一張卡片
@@ -88,62 +91,56 @@ export const useRecordStore = defineStore("record", () => {
     return Object.values(groups).sort((a, b) => b.date.localeCompare(a.date));
   });
 
-  async function fetchRecordsByMonth(data: { year: number; month: number }) {
+  const fetchRecordsByMonth = async (data: { year: number; month: number }) => {
     const { year, month } = data;
     try {
       const response = await getRecordByMonthApi({ year, month });
-      _.map(response, (record) => {
-        return records.push({
+      records.splice(0);
+      for (const record of response) {
+        records.push({
+          id: record.id,
           date: transformedDateToDayOfWeek(record.date),
           icon: record.icon,
           type: record.type,
-          name: record.name,
+          name: record.name || record.type,
           price: record.price,
-        } as DiaryRecord);
-      });
+        });
+        records.splice(0, records.length, ...toRaw(records));
+      }
     } catch (error) {
       console.error("Failed to fetch records:", error);
     }
-  }
-
-  function resetRecords() {
-    records.splice(0);
-  }
-
-  // 新增一個record
-  const addRecord = (newRecord: DiaryRecord) => {
-    records.push(newRecord);
   };
 
-  async function createRecord(record: DiaryRecord) {
+  const createRecord = async (record: DiaryRecord) => {
     try {
       const response = await postCreateRecordApi(record);
       records.push(response.data);
     } catch (error) {
       console.error("Failed to create record:", error);
     }
-  }
+  };
 
-  async function deleteRecord(recordId: string) {
-    try {
-      await deleteRecordApi(recordId);
-      records = records.filter((record) => record.id !== recordId);
-    } catch (error) {
-      console.error("Failed to delete record:", error);
-    }
-  }
+  // async function deleteRecord(recordId: string) {
+  //   try {
+  //     await deleteRecordApi(recordId);
+  //     records = records.filter((record) => record.id !== recordId);
+  //   } catch (error) {
+  //     console.error("Failed to delete record:", error);
+  //   }
+  // }
 
-  async function updateRecord(record: DiaryRecord) {
-    try {
-      const response = await updateRecordApi(record);
-      const index = records.findIndex((r) => r.id === record.id);
-      if (index !== -1) {
-        records[index] = response.data;
-      }
-    } catch (error) {
-      console.error("Failed to update record:", error);
-    }
-  }
+  // async function updateRecord(record: DiaryRecord) {
+  //   try {
+  //     const response = await updateRecordApi(record);
+  //     const index = records.findIndex((r) => r.id === record.id);
+  //     if (index !== -1) {
+  //       records[index] = response.data;
+  //     }
+  //   } catch (error) {
+  //     console.error("Failed to update record:", error);
+  //   }
+  // }
 
   return {
     form,
@@ -151,12 +148,8 @@ export const useRecordStore = defineStore("record", () => {
     updateIcon,
     resetFormValue,
     records,
-    addRecord,
     groupedRecords,
     fetchRecordsByMonth,
     createRecord,
-    deleteRecord,
-    updateRecord,
-    resetRecords,
   };
 });

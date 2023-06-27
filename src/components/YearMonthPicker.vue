@@ -9,12 +9,12 @@
 </template>
 
 <script setup lang="ts">
-import { ref, watch } from "vue";
+import { ref, watchEffect } from "vue";
 import { DArrowLeft, ArrowLeft, DArrowRight, ArrowRight } from "@element-plus/icons-vue";
 
+const emit = defineEmits(["date-selected"]);
 const year = ref(new Date().getFullYear());
 const month = ref(new Date().getMonth() + 1);
-const emit = defineEmits(["date-selected"]);
 
 function incrementMonth() {
   if (month.value === 12) {
@@ -34,13 +34,9 @@ function decrementMonth() {
   }
 }
 
-watch(
-  [year, month],
-  ([newYear, newMonth]) => {
-    emit("date-selected", { year: newYear, month: newMonth });
-  },
-  { immediate: true }
-);
+watchEffect(() => {
+  emit("date-selected", { year: year.value, month: month.value });
+});
 </script>
 
 <style>
