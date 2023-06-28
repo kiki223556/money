@@ -1,5 +1,5 @@
 import { postCreateRecordApi } from "@/api/diaryRecords/createRecord";
-import { getRecordByIdApi } from "@/api/diaryRecords/getRecordById";
+import { deleteRecordByIdApi } from "@/api/diaryRecords/deleteRecordById";
 import { getRecordByMonthApi } from "@/api/diaryRecords/getReocrdByMonth";
 import { putUpdateRecordByIdApi } from "@/api/diaryRecords/updateRecordById";
 import useDate, {
@@ -146,7 +146,7 @@ export const useRecordStore = defineStore("record", () => {
   // 刪除一筆紀錄
   const deleteRecord = async (id: number) => {
     try {
-      await getRecordByIdApi({ id });
+      await deleteRecordByIdApi({ id });
       const index = records.findIndex((record) => record.id === id);
       if (index !== -1) {
         records.splice(index, 1);
