@@ -44,6 +44,8 @@ import { Edit, Delete } from "@element-plus/icons-vue";
 import { useRecordStore } from "@/store/modules/record";
 import { toRefs } from "vue";
 
+const emit = defineEmits(["showDialog"]);
+
 const recordStore = useRecordStore();
 const { groupedRecords } = toRefs(recordStore);
 
@@ -54,10 +56,13 @@ const handleDelete = (id: number) => {
   }
 };
 
-// // 編輯
-// const handleEdit = (id: string) => {
-//   emit("updateRecord", id);
-// };
+// 編輯
+const handleEdit = (id: number) => {
+  const index = recordStore.records.findIndex((record) => record.id === id);
+  const editRecord = { ...recordStore.records[index] }; // 複製編輯的紀錄資料
+  recordStore.setEditedRecord(editRecord); // 將編輯的紀錄資料設置到 store 中
+  emit("showDialog");
+};
 </script>
 
 <style scoped>

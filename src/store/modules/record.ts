@@ -1,6 +1,7 @@
 import { postCreateRecordApi } from "@/api/diaryRecords/createRecord";
 import { getRecordByIdApi } from "@/api/diaryRecords/getRecordById";
 import { getRecordByMonthApi } from "@/api/diaryRecords/getReocrdByMonth";
+import { putUpdateRecordByIdApi } from "@/api/diaryRecords/updateRecordById";
 import useDate, {
   transformedDateToDayOfWeek,
   transformedDateWithoutDayOfWeek,
@@ -39,25 +40,47 @@ export const useRecordStore = defineStore("record", () => {
 
   // 提交表單，新增一筆記錄
   const add = async () => {
-    try {
-      const response = await postCreateRecordApi({
-        ...form,
-        date: transformedDateWithoutDayOfWeek(form.date),
-      });
-      console.log("資料:", response);
-      const newRecord = {
-        id: response.id,
-        date: transformedDateToDayOfWeek(response.date),
-        icon: response.icon,
-        type: response.type,
-        name: response.name || response.type,
-        price: response.price,
-      };
-      records.push(newRecord);
-      console.log("record:", records);
-      resetFormValue();
-    } catch (error) {
-      console.error("Failed to add:", error);
+    if (form.id == 0) {
+      try {
+        const response = await postCreateRecordApi({
+          ...form,
+          date: transformedDateWithoutDayOfWeek(form.date),
+        });
+        console.log("資料:", response);
+        const newRecord = {
+          id: response.id,
+          date: transformedDateToDayOfWeek(response.date),
+          icon: response.icon,
+          type: response.type,
+          name: response.name || response.type,
+          price: response.price,
+        };
+        records.push(newRecord);
+        console.log("record:", records);
+        resetFormValue();
+      } catch (error) {
+        console.error("Failed to add:", error);
+      }
+    } else {
+      try {
+        const response = await putUpdateRecordByIdApi({
+          ...form,
+          date: transformedDateWithoutDayOfWeek(form.date),
+        });
+        const index = records.findIndex((record) => record.id === response.id);
+        if (index !== -1) {
+          Object.assign(records[index], {
+            date: transformedDateToDayOfWeek(response.date),
+            icon: response.icon,
+            type: response.type,
+            name: response.name || response.type,
+            price: response.price,
+          });
+        }
+        resetFormValue();
+      } catch (error) {
+        console.error("Failed to update:", error);
+      }
     }
   };
 
@@ -120,6 +143,7 @@ export const useRecordStore = defineStore("record", () => {
     }
   };
 
+  // 刪除一筆紀錄
   const deleteRecord = async (id: number) => {
     try {
       await getRecordByIdApi({ id });
@@ -132,17 +156,14 @@ export const useRecordStore = defineStore("record", () => {
     }
   };
 
-  // async function updateRecord(record: DiaryRecord) {
-  //   try {
-  //     const response = await updateRecordApi(record);
-  //     const index = records.findIndex((r) => r.id === record.id);
-  //     if (index !== -1) {
-  //       records[index] = response.data;
-  //     }
-  //   } catch (error) {
-  //     console.error("Failed to update record:", error);
-  //   }
-  // }
+  // 更新一筆紀錄
+  const setEditedRecord = async (editRecord: DiaryRecord) => {
+    try {
+      Object.assign(form, editRecord);
+    } catch (error) {
+      console.error("Failed to setEditedRecord:", error);
+    }
+  };
 
   return {
     form,
@@ -154,5 +175,6 @@ export const useRecordStore = defineStore("record", () => {
     fetchRecordsByMonth,
     createRecord,
     deleteRecord,
+    setEditedRecord,
   };
 });

@@ -6,7 +6,6 @@
         <div class="btn-gradient-background" />
         <div style="position: fixed; display: flex; top: 15px">
           <YearMonthPicker @date-selected="fetchRecordsByMonth" />
-          <!-- <YearMonthPicker @date-selected="fetchRecordsByMonth" /> -->
           <div class="btn-show-dialog" @click="showDialog">
             <el-icon class="btn-icon"><Plus /></el-icon>
             新增紀錄
@@ -15,7 +14,7 @@
       </div>
       <!--  記帳紀錄的卡片組件-->
       <div>
-        <RecordCard />
+        <RecordCard @showDialog="showDialog" />
       </div>
     </div>
   </div>
