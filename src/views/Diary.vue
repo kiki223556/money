@@ -5,10 +5,10 @@
       <div style="display: contents">
         <div class="btn-gradient-background" />
         <div style="position: fixed; display: flex; top: 15px">
-          <YearMonthPicker @date-selected="fetchRecordsByMonth" />
+          <YearMonthPicker />
           <div class="btn-show-dialog" @click="showDialog">
             <el-icon class="btn-icon"><Plus /></el-icon>
-            新增紀錄
+            新增
           </div>
         </div>
       </div>
@@ -35,15 +35,11 @@ import { Plus } from "@element-plus/icons-vue";
 import RecordCard from "@/components/Diary/RecordCard.vue";
 import RecordForm from "@/components/Diary/RecordForm.vue";
 import YearMonthPicker from "@/components/YearMonthPicker.vue";
-import { useRecordStore } from "@/store/modules/record";
 
 // 表單是否可見
 const dialogVisible = ref(false);
 const showDialog = () => (dialogVisible.value = true);
 const closeDialog = () => (dialogVisible.value = false);
-
-const recordStore = useRecordStore();
-const fetchRecordsByMonth = recordStore.fetchRecordsByMonth;
 </script>
 
 <style scoped>
@@ -63,7 +59,7 @@ const fetchRecordsByMonth = recordStore.fetchRecordsByMonth;
   color: black;
   z-index: 999;
   border-radius: 30px;
-  width: 200px;
+  width: 100px;
   margin: 0 10px;
   display: flex;
   align-items: center;
@@ -93,10 +89,6 @@ const fetchRecordsByMonth = recordStore.fetchRecordsByMonth;
 @media (max-width: 1000px) {
   .btn-gradient-background {
     width: 410px;
-  }
-  .btn-show-dialog {
-    width: 120px;
-    font-size: 10px;
   }
 }
 </style>

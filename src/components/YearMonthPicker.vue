@@ -11,8 +11,8 @@
 <script setup lang="ts">
 import { ref, watchEffect } from "vue";
 import { DArrowLeft, ArrowLeft, DArrowRight, ArrowRight } from "@element-plus/icons-vue";
+import { useRecordStore } from "@/store/modules/record";
 
-const emit = defineEmits(["date-selected"]);
 const year = ref(new Date().getFullYear());
 const month = ref(new Date().getMonth() + 1);
 
@@ -34,8 +34,11 @@ function decrementMonth() {
   }
 }
 
+const recordStore = useRecordStore();
+
+const fetchRecordsByMonth = recordStore.fetchRecordsByMonth;
 watchEffect(() => {
-  emit("date-selected", { year: year.value, month: month.value });
+  fetchRecordsByMonth({ year: year.value, month: month.value });
 });
 </script>
 

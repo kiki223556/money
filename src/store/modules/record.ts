@@ -38,7 +38,7 @@ export const useRecordStore = defineStore("record", () => {
   // 選擇表單中的圖標
   const selectIcon = (icon: string) => (form.icon = icon);
 
-  // 提交表單，新增一筆記錄
+  // 提交表單，新增一筆記錄到資料庫
   const add = async () => {
     if (form.id == 0) {
       try {
@@ -46,17 +46,9 @@ export const useRecordStore = defineStore("record", () => {
           ...form,
           date: transformedDateWithoutDayOfWeek(form.date),
         });
-        console.log("資料:", response);
-        const newRecord = {
-          id: response.id,
-          date: transformedDateToDayOfWeek(response.date),
-          icon: response.icon,
-          type: response.type,
-          name: response.name || response.type,
-          price: response.price,
-        };
-        records.push(newRecord);
-        console.log("record:", records);
+        const [year, month] = response.date.split("-");
+        await fetchRecordsByMonth({ year: parseInt(year), month: parseInt(month) });
+        console.log(month);
         resetFormValue();
       } catch (error) {
         console.error("Failed to add:", error);
@@ -77,6 +69,9 @@ export const useRecordStore = defineStore("record", () => {
             price: response.price,
           });
         }
+
+        const [year, month] = response.date.split("-");
+        await fetchRecordsByMonth({ year: parseInt(year), month: parseInt(month) });
         resetFormValue();
       } catch (error) {
         console.error("Failed to update:", error);
@@ -94,16 +89,6 @@ export const useRecordStore = defineStore("record", () => {
       name: "",
       price: 0,
     });
-  };
-
-  // 新增一筆紀錄
-  const createRecord = async (record: DiaryRecord) => {
-    try {
-      const response = await postCreateRecordApi(record);
-      records.push(response.data);
-    } catch (error) {
-      console.error("Failed to createRecord:", error);
-    }
   };
 
   // 根據日期將紀錄進行分組，並按日期排序
@@ -173,7 +158,6 @@ export const useRecordStore = defineStore("record", () => {
     records,
     groupedRecords,
     fetchRecordsByMonth,
-    createRecord,
     deleteRecord,
     setEditedRecord,
   };

@@ -1,17 +1,12 @@
 import dayjs from "dayjs";
 
 export default function () {
-  const currentDate = dayjs();
-  const NowMonth = currentDate.format("YYYY-MM");
-  const NowDate = currentDate.format("YYYY-MM-DD");
-  const NowDayOfWeek = currentDate.format("YYYY-MM-DD ddd");
-  const ISO8601 = currentDate.toISOString();
+  const NowDate = dayjs().format("YYYY-MM-DD");
+  const NowDayOfWeek = dayjs().format("YYYY-MM-DD ddd");
 
   return {
-    NowMonth,
     NowDate,
     NowDayOfWeek,
-    ISO8601,
   };
 }
 

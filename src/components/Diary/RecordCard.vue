@@ -7,7 +7,7 @@
         </template>
         <ul class="record-list">
           <li v-for="record in group.records" :key="record.id" class="record-item">
-            <div class="record-info">
+            <div>
               <el-button circle size="small" :icon="record.icon" color="#8F43EE" />
               <span class="record-name">{{ record.name }}</span>
             </div>
@@ -66,9 +66,6 @@ const handleEdit = (id: number) => {
 </script>
 
 <style scoped>
-.record-info {
-  padding-left: 5px;
-}
 li .record-btn {
   float: right;
   display: none;
@@ -78,8 +75,7 @@ li:hover .record-btn {
   margin-right: 6px;
 }
 .record-item:hover {
-  border-radius: 5px;
-  background-color: #aa75ea;
+  background-color: #654689bf;
   transition: all 0.2s ease-in-out;
 }
 .record-name {
@@ -101,12 +97,11 @@ li:hover .record-btn {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  border-bottom: 1px solid #aeaeae;
-  padding: 6px 0;
-}
-
-.record-item:last-child {
-  border-bottom: 0px;
+  border: 1px dashed #dadada71;
+  padding: 6px 10px;
+  margin-top: 7px;
+  border-radius: 17px;
+  background-color: #302b3093;
 }
 
 .record-card {
