@@ -2,20 +2,18 @@
   <div class="diary-layout container">
     <div class="btn-and-record-block">
       <!-- 新增紀錄的按鈕 -->
-      <div style="display: contents">
-        <div class="btn-gradient-background" />
-        <div style="position: fixed; display: flex; top: 15px">
-          <YearMonthPicker />
-          <div class="btn-show-dialog" @click="showDialog">
-            <el-icon class="btn-icon"><Plus /></el-icon>
-            新增
-          </div>
+      <div class="btn-gradient-background" />
+      <div style="position: fixed; display: flex; top: 15px">
+        <YearMonthPicker />
+        <div class="btn-show-dialog" @click="showDialog">
+          <el-icon class="btn-icon"><Plus /></el-icon>
+          新增
         </div>
       </div>
-      <!--  記帳紀錄的卡片組件-->
-      <div>
-        <RecordCard @showDialog="showDialog" />
-      </div>
+    </div>
+    <!--  記帳紀錄的卡片組件-->
+    <div>
+      <RecordCard @showDialog="showDialog" />
     </div>
   </div>
   <!-- 點擊按鈕後出現的表單 -->
@@ -47,6 +45,8 @@ const closeDialog = () => (dialogVisible.value = false);
   padding-right: 6px;
 }
 .btn-and-record-block {
+  position: relative;
+  z-index: 999;
   display: flex;
   align-items: center;
   flex-direction: column;
@@ -57,7 +57,6 @@ const closeDialog = () => (dialogVisible.value = false);
   border: 1px solid #fff;
   background-color: #f0eb8d;
   color: black;
-  z-index: 999;
   border-radius: 30px;
   width: 100px;
   margin: 0 10px;

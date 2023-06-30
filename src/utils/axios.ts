@@ -56,7 +56,7 @@ request.interceptors.response.use(
         // useUserStoreHook().logout();
         break;
       case 403:
-        error.message = "拒絕訪問";
+        error.message = "請先登入";
         break;
       case 404:
         error.message = "請求地址出錯";
