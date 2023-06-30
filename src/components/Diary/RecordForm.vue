@@ -56,13 +56,15 @@ import { useRecordStore } from "@/store/modules/record";
 import useDate from "@/hooks/useDate";
 import categories from "@/config/categories";
 
-const emit = defineEmits(["closeDialog"]);
+const emit = defineEmits(["closeDialog", "formDate"]);
 
 const recordStore = useRecordStore();
 const form = recordStore.form;
 const add = () => {
   if (!form.type) return alert("請選擇類別");
   recordStore.add();
+  const formDate = form.date;
+  emit("formDate", formDate);
   emit("closeDialog");
 };
 const cancel = () => emit("closeDialog");

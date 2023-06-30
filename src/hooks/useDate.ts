@@ -1,4 +1,5 @@
 import dayjs from "dayjs";
+import { reactive } from "vue";
 
 export default function () {
   const NowDate = dayjs().format("YYYY-MM-DD");
@@ -9,6 +10,11 @@ export default function () {
     NowDayOfWeek,
   };
 }
+
+export const sharedState = reactive({
+  year: dayjs().year(),
+  month: dayjs().month() + 1,
+});
 
 export const transformedDateWithoutDayOfWeek = (inputDate: string) =>
   dayjs(inputDate, "YYYY-MM-DD ddd").format("YYYY-MM-DD");

@@ -5,6 +5,7 @@ import { putUpdateRecordByIdApi } from "@/api/diaryRecords/updateRecordById";
 import useDate, {
   transformedDateToDayOfWeek,
   transformedDateWithoutDayOfWeek,
+  sharedState,
 } from "@/hooks/useDate";
 import { DiaryRecord } from "@/types/record";
 import { defineStore } from "pinia";
@@ -47,8 +48,8 @@ export const useRecordStore = defineStore("record", () => {
           date: transformedDateWithoutDayOfWeek(form.date),
         });
         const [year, month] = response.date.split("-");
-        await fetchRecordsByMonth({ year: parseInt(year), month: parseInt(month) });
-        console.log(month);
+        sharedState.month = parseInt(month);
+        sharedState.year = parseInt(year);
         resetFormValue();
       } catch (error) {
         console.error("Failed to add:", error);
@@ -71,7 +72,8 @@ export const useRecordStore = defineStore("record", () => {
         }
 
         const [year, month] = response.date.split("-");
-        await fetchRecordsByMonth({ year: parseInt(year), month: parseInt(month) });
+        sharedState.month = parseInt(month);
+        sharedState.year = parseInt(year);
         resetFormValue();
       } catch (error) {
         console.error("Failed to update:", error);

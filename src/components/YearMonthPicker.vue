@@ -1,51 +1,48 @@
 <template>
   <div class="year-month-picker">
-    <el-button @click="year--" :icon="DArrowLeft" circle color="#413543" />
+    <el-button @click="sharedState.year--" :icon="DArrowLeft" circle color="#413543" />
     <el-button @click="decrementMonth" :icon="ArrowLeft" circle color="#413543" />
-    <span class="date-text">{{ year }} 年 {{ month }} 月</span>
+    <span class="date-text">{{ sharedState.year }} 年 {{ sharedState.month }} 月</span>
     <el-button @click="incrementMonth" :icon="ArrowRight" circle color="#413543" />
-    <el-button @click="year++" :icon="DArrowRight" circle color="#413543" />
+    <el-button @click="sharedState.year++" :icon="DArrowRight" circle color="#413543" />
   </div>
 </template>
 
 <script setup lang="ts">
-import { ref, watchEffect } from "vue";
+import { watchEffect } from "vue";
 import { DArrowLeft, ArrowLeft, DArrowRight, ArrowRight } from "@element-plus/icons-vue";
 import { useRecordStore } from "@/store/modules/record";
-
-const year = ref(new Date().getFullYear());
-const month = ref(new Date().getMonth() + 1);
+import { sharedState } from "@/hooks/useDate";
 
 function incrementMonth() {
-  if (month.value === 12) {
-    month.value = 1;
-    year.value++;
+  if (sharedState.month === 12) {
+    sharedState.month = 1;
+    sharedState.year++;
   } else {
-    month.value++;
+    sharedState.month++;
   }
 }
 
 function decrementMonth() {
-  if (month.value === 1) {
-    month.value = 12;
-    year.value--;
+  if (sharedState.month === 1) {
+    sharedState.month = 12;
+    sharedState.year--;
   } else {
-    month.value--;
+    sharedState.month--;
   }
 }
 
 const recordStore = useRecordStore();
-
 const fetchRecordsByMonth = recordStore.fetchRecordsByMonth;
 watchEffect(() => {
-  fetchRecordsByMonth({ year: year.value, month: month.value });
+  fetchRecordsByMonth({ year: sharedState.year, month: sharedState.month });
 });
 </script>
 
-<style>
+<style scoped>
 .year-month-picker {
-  z-index: 999;
   display: flex;
+  align-items: center;
 }
 .date-text {
   margin: 0 10px;
