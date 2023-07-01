@@ -3,7 +3,10 @@
     <template v-for="group in groupedRecords" :key="group.id">
       <el-card class="record-box">
         <template #header>
-          <span>{{ group.date }}</span>
+          <div class="record-head">
+            <span>{{ group.date }}</span>
+            <span>$ {{ group.totalAmount }}</span>
+          </div>
         </template>
         <ul class="record-list">
           <li v-for="record in group.records" :key="record.id" class="record-item">
@@ -82,7 +85,7 @@ li:hover .record-btn {
   margin-left: 10px;
 }
 .record-box {
-  margin: 10px;
+  margin-bottom: 15px;
   width: 500px;
   color: #fff;
   background-color: #413543;
@@ -104,12 +107,21 @@ li:hover .record-btn {
   background-color: #302b3093;
 }
 
-.record-card {
+.record-head {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  flex-direction: column;
-  margin-top: 50px;
+  padding: 6px 10px;
+  font-weight: 700;
+  font-size: 18px;
+}
+
+.record-card {
+  /* display: flex; */
+  /* justify-content: space-between; */
+  /* align-items: center; */
+  /* flex-direction: column; */
+  /* margin-top: 50px; */
   padding: 0px;
 }
 .record-list {

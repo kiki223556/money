@@ -2,6 +2,8 @@ import { postCreateRecordApi } from "@/api/diaryRecords/createRecord";
 import { deleteRecordByIdApi } from "@/api/diaryRecords/deleteRecordById";
 import { getRecordByMonthApi } from "@/api/diaryRecords/getReocrdByMonth";
 import { putUpdateRecordByIdApi } from "@/api/diaryRecords/updateRecordById";
+import { getDailyRecordCostApi } from "@/api/diaryRecords/getDailyRecordCost";
+
 import useDate, {
   transformedDateToDayOfWeek,
   transformedDateWithoutDayOfWeek,
@@ -50,6 +52,7 @@ export const useRecordStore = defineStore("record", () => {
         const [year, month] = response.date.split("-");
         sharedState.month = parseInt(month);
         sharedState.year = parseInt(year);
+        fetchRecordsByMonth({ year, month });
         resetFormValue();
       } catch (error) {
         console.error("Failed to add:", error);
@@ -95,12 +98,15 @@ export const useRecordStore = defineStore("record", () => {
 
   // 根據日期將紀錄進行分組，並按日期排序
   const groupedRecords = computed(() => {
-    const groups: { [date: string]: { date: string; records: DiaryRecord[] } } = {};
+    const groups: {
+      [date: string]: { date: string; records: DiaryRecord[]; totalAmount: number };
+    } = {};
     for (const record of records) {
       if (!(record.date in groups)) {
-        groups[record.date] = { date: record.date, records: [] };
+        groups[record.date] = { date: record.date, records: [], totalAmount: 0 };
       }
       groups[record.date].records.push(record);
+      groups[record.date].totalAmount += record.price;
 
       watch(groupedRecords, (newGroupedRecords) => {
         groupedRecords.value.splice(0, groupedRecords.value.length, ...newGroupedRecords);
@@ -152,7 +158,18 @@ export const useRecordStore = defineStore("record", () => {
     }
   };
 
+  const show = async (data: { year: number; month: number }) => {
+    const { year, month } = data;
+    try {
+      const response = await getDailyRecordCostApi({ year, month });
+      console.log("show success", response);
+    } catch (error) {
+      console.log("show error", error);
+    }
+  };
+
   return {
+    show,
     form,
     add,
     selectIcon,
