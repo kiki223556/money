@@ -11,8 +11,19 @@
         </div>
       </div>
     </div>
-    <!--  記帳紀錄的卡片組件-->
-    <div>
+    <!-- 月支出收入 -->
+    <div
+      style="
+        position: relative;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+        top: 70px;
+      "
+    >
+      <Statistic />
+      <!--  記帳紀錄的卡片組件-->
       <RecordCard @showDialog="showDialog" />
     </div>
   </div>
@@ -33,6 +44,7 @@ import { Plus } from "@element-plus/icons-vue";
 import RecordCard from "@/components/Diary/RecordCard.vue";
 import RecordForm from "@/components/Diary/RecordForm.vue";
 import YearMonthPicker from "@/components/YearMonthPicker.vue";
+import Statistic from "@/components/Statistic.vue";
 
 // 表單是否可見
 const dialogVisible = ref(false);
@@ -73,7 +85,7 @@ const closeDialog = () => (dialogVisible.value = false);
   top: 0px;
   height: 80px;
   background: linear-gradient(to top, rgba(45, 39, 39, 0), rgba(45, 39, 39, 1) 30px);
-  width: 700px;
+  width: -webkit-fill-available;
 }
 
 .diary-layout {

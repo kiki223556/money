@@ -36,6 +36,7 @@ const recordStore = useRecordStore();
 const fetchRecordsByMonth = recordStore.fetchRecordsByMonth;
 watchEffect(() => {
   fetchRecordsByMonth({ year: sharedState.year, month: sharedState.month });
+  recordStore.show({ year: sharedState.year, month: sharedState.month });
 });
 </script>
 
